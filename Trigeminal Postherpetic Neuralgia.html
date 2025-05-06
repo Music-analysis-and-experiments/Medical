@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TG-PHN: Pathophysiology to Treatment Summary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3; /* Dark Blue */
+            margin-bottom: 0.7em;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 5px;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            font-weight: bold;
+            color: #495057;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 4px;
+            margin: 2px;
+        }
+        .tab-button:hover {
+            background-color: #ced4da;
+        }
+        .tab-button.active {
+            background-color: #007bff; /* Bright Blue */
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #ffffff;
+            animation: fadeIn 0.5s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        ul {
+            list-style: disc;
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: #d9534f; /* Reddish */
+        }
+        .pathophysiology-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .patho-stage {
+            border: 1px dashed #007bff;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            position: relative;
+        }
+        .patho-stage h4 {
+            margin-top: 0;
+            color: #0056b3;
+            border-bottom: 1px solid #007bff;
+            padding-bottom: 5px;
+        }
+        .patho-arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #007bff;
+            margin: -10px 0;
+        }
+        .key-molecule {
+            background-color: #ffc107; /* Yellow */
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+            cursor: help;
+            position: relative;
+        }
+        .tooltip {
+            visibility: hidden;
+            width: 250px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position above the element */
+            left: 50%;
+            margin-left: -125px; /* Center the tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+        .key-molecule:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .treatment-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .treatment-section:last-child {
+            border-bottom: none;
+        }
+        .treatment-section h4 {
+            color: #28a745; /* Green */
+        }
+        .treatment-item {
+            margin-bottom: 10px;
+        }
+        .fda-approved {
+            color: green;
+            font-weight: bold;
+        }
+        .first-line {
+            font-style: italic;
+            color: #17a2b8; /* Teal */
+        }
+        .caveat {
+            font-size: 0.9em;
+            color: #6c757d; /* Gray */
+        }
+        .reference {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Trigeminal Postherpetic Neuralgia (TG-PHN): Summary</h1>
+        <p>Interactive summary based on Niemeyer et al., Current Pain and Headache Reports (2024) 28:295-306</p>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'overview')">Overview & Intro</button>
+            <button class="tab-button" onclick="openTab(event, 'riskfactors')">Risk Factors</button>
+            <button class="tab-button" onclick="openTab(event, 'clinical')">Clinical Features</button>
+            <button class="tab-button" onclick="openTab(event, 'pathophysiology')">Pathophysiology</button>
+            <button class="tab-button" onclick="openTab(event, 'treatment')">Treatment</button>
+            <button class="tab-button" onclick="openTab(event, 'conclusion')">Conclusion</button>
+        </div>
+
+        <div id="overview" class="tab-content active">
+            <h2>Overview & Introduction</h2>
+            <p><strong>Definition:</strong> TG-PHN is a neuropathic pain condition resulting from herpes zoster (HZ, shingles) affecting the trigeminal nerve (CN V). Pain persists or recurs for <strong>at least 3 months</strong> after the HZ rash onset.</p>
+            <p><strong>Cause:</strong> Reactivation of the Varicella Zoster Virus (VZV), which remains latent in trigeminal ganglion (TG) neurons after primary infection (chickenpox).</p>
+            <p><strong>Epidemiology:</strong></p>
+            <ul>
+                <li>HZ affects >1 million annually in the USA.</li>
+                <li>Most cephalic (head/face) zoster (58%) involves the trigeminal nerve.</li>
+                <li>The first division (V1, ophthalmic) is most common, termed Herpes Zoster Ophthalmicus (HZO), accounting for 2.5-20% of all HZ cases.</li>
+                <li>TG-PHN risk is <strong>higher</strong> compared to PHN in other body locations.</li>
+                <li>Affects quality of life severely and can persist for months, years, or indefinitely (22-46% > 2 years).</li>
+            </ul>
+            <p><strong>Purpose of Review:</strong> To explore clinical characteristics, pathophysiology, and treatment options for TG-PHN.</p>
+        </div>
+
+        <div id="riskfactors" class="tab-content">
+            <h2>Risk Factors for Developing PHN after HZ</h2>
+            <ul>
+                <li><strong>Advancing Age:</strong> Incidence dramatically increases with age (risk >40% in HZ cases over 60). 80 years is a noted cutoff for higher risk after HZO.</li>
+                <li><strong>Location:</strong> Trigeminal nerve involvement (especially V1/HZO) carries >2x risk compared to non-ophthalmic zoster.</li>
+                <li><strong>Rash Severity:</strong> Severe HZ skin eruption increases PHN risk. Eye involvement (keratitis, uveitis) may also increase risk. Suggests higher viral load/inflammation.</li>
+                <li><strong>Pain Severity (Acute HZ):</strong> Severe pain during the initial HZ episode is strongly associated with developing PHN.</li>
+                <li><strong>Zoster Sine Herpete (ZSH):</strong> Zoster occurring without a rash. Associated pain can be more intense and prolonged than typical HZ/PHN.</li>
+                <li><strong>Demographics:</strong> Higher frequency noted in women and White individuals compared to men and other races/ethnicities.</li>
+                <li><strong>Comorbidities/Other:</strong> Potential links to persistent VZV DNA in blood cells and increased stroke risk post-HZ (especially HZO) warrant further study.</li>
+            </ul>
+        </div>
+
+        <div id="clinical" class="tab-content">
+            <h2>Clinical Features of TG-PHN</h2>
+            <ul>
+                <li><strong>Pain:</strong> Highly variable qualities:
+                    <ul>
+                        <li>Deep, burning, aching (continuous)</li>
+                        <li>Lancinating, shooting, stabbing (paroxysmal)</li>
+                        <li>Often a combination</li>
+                    </ul>
+                </li>
+                <li><strong>Sensory Disturbances:</strong> Common alongside pain:
+                    <ul>
+                        <li><strong>Allodynia:</strong> Pain evoked by normally non-painful stimuli (e.g., light touch, breeze) - indicates central sensitization.</li>
+                        <li><strong>Hyperalgesia:</strong> Increased pain from painful stimuli.</li>
+                        <li><strong>Paresthesia/Dysesthesia:</strong> Abnormal sensations (tingling, pins & needles) / unpleasant abnormal sensations.</li>
+                        <li><strong>Numbness:</strong> Sensory loss, often more prominent in TG-PHN vs truncal PHN, suggesting more nerve degeneration.</li>
+                    </ul>
+                </li>
+                <li><strong>Postherpetic Pruritus (PHP):</strong> Chronic itching. More frequent in TG-PHN (43%) than other locations (25%). Can be severe and debilitating.</li>
+                <li><strong>Trigeminal Trophic Syndrome:</strong> Skin/tissue damage (ulceration) in the affected area, can occur months/years later, sometimes due to nerve damage or even treatment complications.</li>
+                <li><strong>Systemic/Cerebral Symptoms:</strong> High prevalence (~40%) of insomnia, anxiety, depression, cognitive difficulties, chronic fatigue, weight loss, anorexia.</li>
+                <li><strong>Physical Exam & Testing:</strong>
+                    <ul>
+                        <li>Significant sensory changes (loss or altered sensation) on the affected side compared to the unaffected side, even in adjacent branches.</li>
+                        <li>Neurophysiological tests may show abnormalities (e.g., delayed blink reflex).</li>
+                        <li>Imaging (CT/MRI) is usually normal but can rarely show TG enhancement (ganglionitis) or brainstem signal changes ("trigeminal pontine sign"). Research MRI shows CNS structural/functional changes (e.g., thalamic volume, connectivity).</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div id="pathophysiology" class="tab-content">
+            <h2>Pathophysiology of TG-PHN</h2>
+            <p>TG-PHN involves complex changes at multiple levels of the nervous system, triggered by VZV reactivation. (Simplified Flow based on Figure 1)</p>
+
+            <div class="pathophysiology-diagram">
+                <div class="patho-stage">
+                    <h4>1. Peripheral Tissue (Site of Reactivation - e.g., Skin)</h4>
+                    <ul>
+                        <li>VZV replication causes direct nerve/tissue injury.</li>
+                        <li><strong>Inflammatory Response:</strong> Immune cells (macrophages, T-cells, mast cells) release pro-inflammatory mediators:
+                            <span class="key-molecule">Cytokines<span class="tooltip">e.g., IL-1β, TNF-α, IL-6. TNF-α and IL-1β sensitize nociceptors. IL-6 correlates with PHN pain severity.</span></span>,
+                            <span class="key-molecule">Histamine<span class="tooltip">Released by mast cells, contributes to inflammation and itch.</span></span>, Bradykinin, Prostaglandins.
+                        </li>
+                        <li><strong>Cellular Remodeling & Sensitization:</strong>
+                            Increased expression/sensitivity of nociceptive channels on nerve endings:
+                            <span class="key-molecule">TRPV1<span class="tooltip">Transient Receptor Potential Vanilloid 1: Detects heat, capsaicin, low pH. Target for capsaicin treatment.</span></span>,
+                            <span class="key-molecule">TRPA1<span class="tooltip">Transient Receptor Potential Ankyrin 1: Detects cold, irritants, mechanical stimuli.</span></span>,
+                            <span class="key-molecule">P2XR<span class="tooltip">Purinergic Receptor: Activated by ATP released from damaged cells. P2X7 inhibition reduced pain in models.</span></span>.
+                            Increased release of neuropeptides:
+                            <span class="key-molecule">CGRP<span class="tooltip">Calcitonin Gene-Related Peptide: Vasodilator, pain transmitter. Increased in PHN skin/serum. Target for new migraine/pain drugs.</span></span>,
+                            <span class="key-molecule">Substance P (SP)<span class="tooltip">Neuropeptide involved in pain transmission and neurogenic inflammation. Binds to NK-1R.</span></span>.
+                        </li>
+                        <li><strong>Nerve Fiber Loss:</strong> Damage leads to loss of nerve endings, contributing to numbness but also potentially aberrant signaling.</li>
+                    </ul>
+                </div>
+
+                <div class="patho-arrow">⬇</div>
+
+                <div class="patho-stage">
+                    <h4>2. Trigeminal Ganglion (TG)</h4>
+                    <ul>
+                        <li><strong>Viral Replication & Inflammation:</strong> VZV replicates within neurons and satellite glial cells. Triggers local inflammation (Cytokines like <span class="key-molecule">IL-1β<span class="tooltip">Pro-inflammatory cytokine involved in sensitization.</span></span>, <span class="key-molecule">TNF-α<span class="tooltip">Tumor Necrosis Factor-alpha: Pro-inflammatory cytokine, sensitizes neurons, can induce channel changes.</span></span> released).</li>
+                        <li><strong>Neuronal Hypersensitivity:</strong> Altered ion channel function (<span class="key-molecule">Sodium Channels<span class="tooltip">Voltage-gated Na+ channels: Crucial for action potentials. Altered expression/function leads to hyperexcitability. Target for lidocaine.</span></span>, <span class="key-molecule">Calcium Channels<span class="tooltip">Voltage-gated Ca++ channels: Involved in neurotransmitter release. Target for gabapentinoids (α2δ subunit).</span></span>) leads to easier firing.</li>
+                        <li><strong>Increased Neurotransmitter Release:</strong> More <span class="key-molecule">CGRP<span class="tooltip">Calcitonin Gene-Related Peptide: Transported to central terminals.</span></span>, <span class="key-molecule">Substance P<span class="tooltip">Neurokinin 1 Receptor (NK-1R) ligand.</span></span>, <span class="key-molecule">ATP<span class="tooltip">Adenosine Triphosphate: Acts on P2X receptors.</span></span> released towards the brainstem.</li>
+                        <li><strong>Cell Death:</strong> Some neurons may die due to viral activity or inflammation.</li>
+                    </ul>
+                </div>
+
+                <div class="patho-arrow">⬇</div>
+
+                <div class="patho-stage">
+                    <h4>3. Central Nervous System - Brainstem (Spinal Trigeminal Nucleus pars Caudalis - SNVc)</h4>
+                    <ul>
+                        <li><strong>Increased Excitatory Input:</strong> Afferent fibers release excess excitatory neurotransmitters (<span class="key-molecule">Glutamate<span class="tooltip">Primary excitatory neurotransmitter in CNS. Acts on AMPA and NMDA receptors.</span></span>, <span class="key-molecule">CGRP<span class="tooltip">Acts on CGRP receptors on second-order neurons.</span></span>, <span class="key-molecule">Substance P<span class="tooltip">Acts on NK-1 receptors, contributes to central sensitization.</span></span>).</li>
+                        <li><strong>Central Sensitization:</strong> Second-order neurons become hyperexcitable. Key receptors involved:
+                            <span class="key-molecule">NMDA<span class="tooltip">N-methyl-D-aspartate Receptor: Glutamate receptor critical for synaptic plasticity and central sensitization. Target for ketamine.</span></span>,
+                            <span class="key-molecule">AMPA<span class="tooltip">α-amino-3-hydroxy-5-methyl-4-isoxazolepropionic acid Receptor: Another glutamate receptor involved in fast synaptic transmission.</span></span>,
+                            <span class="key-molecule">NK-1R<span class="tooltip">Neurokinin 1 Receptor: Binds Substance P. Aprepitant is an NK-1R antagonist.</span></span>.
+                        </li>
+                        <li><strong>Decreased Inhibition:</strong> Reduced function or release of inhibitory neurotransmitters like
+                            <span class="key-molecule">GABA<span class="tooltip">Gamma-Aminobutyric Acid: Primary inhibitory neurotransmitter in the brain. Reduced GABAergic tone contributes to pain.</span></span> and Glycine.
+                        </li>
+                        <li><strong>Neuroinflammation:</strong> Activation of glial cells (
+                            <span class="key-molecule">Microglia<span class="tooltip">Immune cells of the CNS. Release inflammatory mediators when activated.</span></span>,
+                            <span class="key-molecule">Astrocytes<span class="tooltip">Support cells in CNS. Can become reactive (astrogliosis) and contribute to pain chronification. VZV can infect astrocytes.</span></span>
+                            ) further contributes to the pro-nociceptive environment.
+                        </li>
+                    </ul>
+                </div>
+
+                 <div class="patho-arrow">⬇</div>
+
+                <div class="patho-stage">
+                    <h4>4. Central Nervous System - Thalamus (VPM) & Cortex</h4>
+                    <ul>
+                        <li>Pain signals ascend from the brainstem (SNVc) to the Ventral Posteromedial (VPM) nucleus of the thalamus.</li>
+                        <li><strong>Altered Thalamic Processing:</strong> Evidence suggests <span class="key-molecule">decreased GABAergic inhibition</span> within the thalamus (in animal models), leading to amplified pain signals relayed to the somatosensory cortex.</li>
+                        <li><strong>Cortical Changes:</strong> Structural (e.g., cortical thickness changes) and functional alterations in brain areas related to sensory, motor, and cognitive/emotional aspects of pain contribute to the overall experience and persistence of TG-PHN. Altered connectivity in pain modulation pathways (e.g., involving periaqueductal gray).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="treatment" class="tab-content">
+            <h2>Treatment of TG-PHN</h2>
+            <p>Management is challenging; prevention is key. Early treatment (< 9 months) may yield better outcomes.</p>
+
+            <div class="treatment-section">
+                <h4>Prevention</h4>
+                <ul>
+                    <li class="treatment-item"><strong>Vaccination:</strong>
+                        <ul>
+                            <li><strong>RZV (Shingrix):</strong> Recombinant subunit vaccine. <span class="fda-approved">Preferred</span>. High efficacy against HZ and PHN (76-88%), including in older adults. <span class="caveat">Requires 2 doses. Can be reactogenic (local soreness, fatigue).</span></li>
+                            <li>ZVL (Zostavax): Live attenuated vaccine. Less effective, efficacy wanes, not for immunocompromised.</li>
+                        </ul>
+                    </li>
+                    <li class="treatment-item"><strong>Early HZ Treatment:</strong> Antivirals, analgesics during acute HZ. <span class="caveat">Evidence for preventing PHN is weak.</span></li>
+                     <li class="treatment-item"><strong>Interventional (Prevention?):</strong> Pulsed radiofrequency (PRF) of Gasserian ganglion during acute HZ showed promise in one study for preventing PHN in elderly. <span class="caveat">More research needed.</span></li>
+                </ul>
+            </div>
+
+            <div class="treatment-section">
+                <h4>Conservative: Systemic Medications</h4>
+                 <ul>
+                    <li class="treatment-item"><strong>Gabapentinoids:</strong> <span class="first-line">First Line</span>. Modulate α2δ subunit of voltage-gated calcium channels.
+                        <ul>
+                            <li><strong>Pregabalin (Lyrica):</strong> 300-600 mg/day. <span class="fda-approved">FDA Approved</span>. May be better for pain/sleep than gabapentin.</li>
+                            <li><strong>Gabapentin (Neurontin):</strong> 1800-3600 mg/day. <span class="fda-approved">FDA Approved</span>. May be better tolerated than pregabalin.</li>
+                             <li><strong>Mirogabalin:</strong> 15-30 mg/day. Newer α2δ ligand, showed efficacy in PHN study (including TG-PHN).</li>
+                        </ul>
+                         <span class="caveat">Side effects: dizziness, somnolence, edema. Titrate slowly.</span>
+                    </li>
+                    <li class="treatment-item"><strong>Tricyclic Antidepressants (TCAs):</strong> <span class="first-line">First Line</span> (Off-label). Inhibit serotonin/norepinephrine reuptake, block channels.
+                        <ul>
+                            <li>Amitriptyline, Nortriptyline: 50-150 mg/day (often lower doses tolerated).</li>
+                        </ul>
+                        <span class="caveat">Significant side effects, especially in elderly (anticholinergic, cardiac). Use with caution. Nortriptyline often better tolerated.</span>
+                    </li>
+                     <li class="treatment-item"><strong>Serotonin-Norepinephrine Reuptake Inhibitors (SNRIs):</strong> Off-label.
+                        <ul>
+                            <li>Duloxetine (Cymbalta): 60-120 mg/day.</li>
+                            <li>Venlafaxine (Effexor): 150-225 mg/day.</li>
+                        </ul>
+                        <span class="caveat">May be better tolerated than TCAs. Side effects: nausea, insomnia, BP changes (Venlafaxine).</span>
+                    </li>
+                     <li class="treatment-item"><strong>Other Antiseizure Medications:</strong> Off-label. Based on benefit in other neuropathic pains (like trigeminal neuralgia).
+                        <ul>
+                            <li>Carbamazepine, Oxcarbazepine, Lamotrigine, Valproic Acid.</li>
+                        </ul>
+                        <span class="caveat">Variable efficacy in PHN, significant side effect profiles, monitoring required.</span>
+                    </li>
+                    <li class="treatment-item"><strong>Opioids:</strong>
+                         <ul>
+                            <li>Tramadol, others.</li>
+                        </ul>
+                        <span class="caveat">Frequently prescribed but NOT first-line. Limited long-term efficacy, risk of tolerance, dependence, side effects (constipation, sedation). Consider only if other options fail/insufficient.</span>
+                    </li>
+                    <li class="treatment-item"><strong>Combination Therapy:</strong> Often needed when monotherapy is insufficient or limited by side effects.</li>
+                </ul>
+            </div>
+
+             <div class="treatment-section">
+                <h4>Conservative: Local/Topical Treatments</h4>
+                 <ul>
+                    <li class="treatment-item"><strong>Lidocaine 5% Patch (Lidoderm):</strong> <span class="fda-approved">FDA Approved</span>. Blocks voltage-gated sodium channels locally. Apply up to 12 hours/day. <span class="caveat">Targeted relief, minimal systemic absorption. Skin irritation possible.</span></li>
+                    <li class="treatment-item"><strong>Capsaicin 8% Patch (Qutenza):</strong> <span class="fda-approved">FDA Approved</span>. High-concentration TRPV1 agonist, causes initial burning then desensitization. Single application every 3 months in clinic. <span class="caveat">Reportedly used for TG-PHN but requires caution due to facial application/irritation. Pre-treatment with local anesthetic needed.</span></li>
+                    <li class="treatment-item"><strong>Low-dose Capsaicin Cream (0.025-0.075%):</strong> <span class="caveat">Evidence is inconclusive. Requires multiple daily applications, burning sensation common.</span></li>
+                 </ul>
+             </div>
+
+            <div class="treatment-section">
+                <h4>Conservative: Non-Pharmacologic</h4>
+                 <ul>
+                    <li class="treatment-item"><strong>Cognitive Behavioral Therapy (CBT):</strong> May help improve coping, reduce impact of pain, address associated anxiety/depression. <span class="caveat">Evidence specifically for PHN is limited but suggested.</span></li>
+                    <li class="treatment-item"><strong>Acupuncture:</strong> May reduce pain intensity and anxiety. <span class="caveat">Limited high-quality evidence, variable results.</span></li>
+                 </ul>
+            </div>
+
+
+            <div class="treatment-section">
+                <h4>Interventional Treatments (for Refractory Pain)</h4>
+                 <ul>
+                    <li class="treatment-item"><strong>Botulinum Toxin-A (BTX-A) Injections:</strong> Subdermal injections in the painful area. Trials show significant pain reduction vs placebo. <span class="caveat">Mechanism complex (sensory nerve terminal effects). Side effects: local pain, potential facial muscle weakness (transient). Optimal dosing/standardization ongoing.</span></li>
+                    <li class="treatment-item"><strong>Nerve Blocks:</strong> Injection of local anesthetic (+/- steroid) around specific trigeminal branches (e.g., supraorbital, infraorbital). Can provide diagnostic information and temporary relief. <span class="caveat">Repeated blocks may be needed. Steroid risks (atrophy).</span></li>
+                    <li class="treatment-item"><strong>Nerve Ablation (Radiofrequency/Cryoablation):</strong> Considered if diagnostic blocks are successful. Destroys nerve fibers for longer-lasting relief. <span class="caveat">Risk of permanent numbness, anesthesia dolorosa (painful numbness), skin burns (esp. with continuous RFA). Pulsed RFA may be safer.</span></li>
+                    <li class="treatment-item"><strong>Stellate Ganglion Block (SGB):</strong> Blockade of sympathetic ganglion in the neck. More commonly used for acute HZ pain. <span class="caveat">Variable and often limited efficacy reported for chronic TG-PHN. Risks: Horner syndrome (usually transient), phrenic nerve palsy, vascular injury.</span></li>
+                    <li class="treatment-item"><strong>Spinal Cord Stimulation (SCS):</strong> Implantation of electrodes near the high cervical spinal cord / cervicomedullary junction to modulate pain signals in the SNVc. <span class="caveat">Emerging technique for TG-PHN. Technically demanding. Potential for paresthesia coverage issues, hardware complications. Promising results in small series (>70% relief >1 yr).</span></li>
+                    <li class="treatment-item"><strong>Peripheral Nerve Stimulation (PNS):</strong> Electrodes placed directly adjacent to affected trigeminal branches (e.g., supraorbital, infraorbital). Less invasive than SCS. <span class="caveat">Good option for V1/V2 pain. Requires successful trial period. Coverage for V3 (mandibular) can be difficult. Reports show good outcomes in small series (reduced pain/opioid use). Hardware complications possible.</span></li>
+                 </ul>
+            </div>
+             <p><strong>Note:</strong> Target doses are often limited by tolerability. Many treatments are used off-label for TG-PHN.</p>
+        </div>
+
+        <div id="conclusion" class="tab-content">
+            <h2>Conclusion</h2>
+            <p>TG-PHN is a common, complex, and debilitating condition arising from VZV reactivation in the trigeminal nerve.</p>
+            <p>Its pathophysiology involves a cascade of events from peripheral inflammation and sensitization to central changes in the brainstem, thalamus, and cortex, involving numerous molecular mediators and altered neuronal excitability/inhibition.</p>
+            <p>Current management relies on prevention (vaccination), pharmacological therapies (gabapentinoids, TCAs often first-line), topical agents, and interventional approaches for refractory cases.</p>
+            <p>Further research into the intricate peripheral and central mechanisms is crucial for developing more targeted and effective therapies to improve outcomes for patients suffering from TG-PHN.</p>
+        </div>
+
+        <div class="reference">
+           Summary based on: Niemeyer CS, Harlander-Locke M, Bubak AN, Rzasa-Lynn R, Birlea M. Trigeminal Postherpetic Neuralgia: From Pathophysiology to Treatment. Curr Pain Headache Rep. 2024 Jan 23;28(4):295-306. doi: 10.1007/s11916-023-01209-z. Epub ahead of print. PMID: 38258347; PMCID: PMC10805064.
+        </div>
+
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tab-content" and hide them
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Get all elements with class="tab-button" and remove the class "active"
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Ensure the default active tab is displayed correctly on load
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('.tab-button.active').click();
+        });
+    </script>
+
+</body>
+</html>
