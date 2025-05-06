@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Summary: Melatonin in Sleep Disorders</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Neurologia blue */
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .article-meta {
+            font-size: 0.9em;
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            overflow: hidden;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            background-color: #e9ecef; /* Light grey background for tabs */
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tabs button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 1em;
+            color: #0056b3;
+            font-weight: bold;
+        }
+
+        .tabs button:hover {
+            background-color: #ddd;
+        }
+
+        .tabs button.active {
+            background-color: #0056b3; /* Active tab color */
+            color: white;
+            border-bottom: 3px solid #003d80; /* Darker blue indicator */
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px 12px;
+            border-top: none;
+        }
+
+        /* Accordion */
+        .accordion-button {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 12px 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1em;
+            transition: 0.4s;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-button:hover, .accordion-button.active {
+            background-color: #ccc;
+        }
+
+        .accordion-button::after {
+            content: '+'; /* Plus sign */
+            font-size: 1.2em;
+            color: #777;
+            margin-left: 10px;
+        }
+
+        .accordion-button.active::after {
+            content: "−"; /* Minus sign */
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .panel p, .panel ul {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Status Indicators */
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .status-positive { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-mixed { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .status-negative { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status-insufficient { background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
+        .status-info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+
+        /* Tooltips for Status */
+        .status[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background-color: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            z-index: 10;
+            margin-left: 10px; /* Position tooltip slightly to the right */
+            margin-top: -20px; /* Position tooltip slightly above */
+        }
+         .status[data-tooltip] {
+            position: relative; /* Needed for absolute positioning of tooltip */
+            cursor: help;
+        }
+
+        /* Simple Diagram */
+        .diagram {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .diagram span {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+        }
+        .diagram .arrow {
+             font-size: 1.2em;
+             color: #555;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Interactive Summary: Melatonin in Sleep Disorders</h1>
+    <p class="article-meta">Based on: Poza JJ, Pujol M, Ortega-Albás JJ, Romero O. Melatonina en los trastornos de sueño. Neurología. 2022;37:575-585.<br> (Review article, received April 2018, accepted August 2018)</p>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'Introduction')">Introduction & Physiology</button>
+        <button class="tab-button" onclick="openTab(event, 'Pharmacology')">Pharmacology</button>
+        <button class="tab-button" onclick="openTab(event, 'Insomnia')">Melatonin for Insomnia</button>
+        <button class="tab-button" onclick="openTab(event, 'Circadian')">Circadian Disorders</button>
+        <button class="tab-button" onclick="openTab(event, 'Conclusion')">Conclusion</button>
+    </div>
+
+    <!-- Introduction & Physiology Tab -->
+    <div id="Introduction" class="tab-content" style="display: block;">
+        <h2>Introduction & Physiology of Melatonin</h2>
+        <p>Melatonin (N-acetyl-5-methoxytryptamine) is the primary hormone regulating the sleep-wake cycle. Its potential use in treating insomnia is significant due to its natural role, oral availability, and age-related decline potentially linking it to sleep quality issues in older adults.</p>
+
+        <button class="accordion-button">Synthesis and Regulation</button>
+        <div class="panel">
+            <p><strong>Synthesis Pathway:</strong></p>
+            <div class="diagram">
+               <span>Tryptophan</span> <span class="arrow">→</span> <span>Serotonin</span> <span class="arrow">→</span> <span>N-acetylserotonin</span> <span class="arrow">→</span> <span>Melatonin</span>
+            </div>
+            <p><strong>Regulation:</strong></p>
+            <ul>
+                <li>Primarily synthesized in the pineal gland, but also in other tissues (retina, gut, immune cells).</li>
+                <li>Regulated by the Suprachiasmatic Nucleus (SCN), the body's master clock.</li>
+                <li>Light (especially blue light detected by melanopsin in retinal ganglion cells) inhibits melatonin production via the retinohypothalamic tract.</li>
+                <li>Production increases in darkness, typically starting around 8-10 PM, peaking between midnight and 3 AM.</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button">Changes Over Life & Daily Cycle</button>
+        <div class="panel">
+            <p><strong>Lifespan Changes:</strong></p>
+            <ul>
+                <li>Production starts at 3-4 months of age.</li>
+                <li>Peaks during childhood (ages 8-10).</li>
+                <li>Decreases dramatically during puberty.</li>
+                <li>Progressively decreases after age 40-45; by age 70, levels are ~10% of prepubertal levels. <span class="status status-info" data-tooltip="Hypothesized link to increased insomnia with age">Link to Ageing</span></li>
+            </ul>
+             <p><strong>Daily Cycle (Circadian Rhythm):</strong></p>
+             <ul>
+                <li>Synthesized in response to darkness.</li>
+                <li>Peak levels (100-200 pg/mL) occur at night, usually when core body temperature is lowest.</li>
+                <li>Daytime levels are very low (10-30 pg/mL).</li>
+                <li>Morning light exposure advances the cycle (earlier peak); evening light delays it.</li>
+             </ul>
+        </div>
+
+        <button class="accordion-button">Functions of Melatonin</button>
+        <div class="panel">
+            <p><strong>Primary Role:</strong></p>
+            <ul>
+                <li><strong>Chronobiotic:</strong> Signals "darkness" to the body, synchronizing internal clocks and promoting sleep. Acts on SCN and peripheral clocks.</li>
+                <li><strong>Thermoregulation:</strong> Contributes to the drop in body temperature associated with sleep onset.</li>
+            </ul>
+            <p><strong>Other Potential Roles:</strong></p>
+             <ul>
+                <li><strong>Antioxidant:</strong> Direct scavenger of reactive oxygen/nitrogen species; stimulates antioxidant enzymes.</li>
+                <li><strong>Immune Modulation:</strong> Generally immunostimulatory.</li>
+                <li><strong>Oncostatic Effects:</strong> Potential role in cancer prevention/treatment (experimental evidence, clinical trials ongoing).</li>
+                <li><strong>Reproductive Cycle Regulation:</strong> Involved in timing of puberty and seasonal reproduction in animals.</li>
+             </ul>
+        </div>
+    </div>
+
+    <!-- Pharmacology Tab -->
+    <div id="Pharmacology" class="tab-content">
+        <h2>Pharmacological Properties</h2>
+        
+        <button class="accordion-button">Pharmacokinetics (How the body handles Melatonin)</button>
+        <div class="panel">
+             <p><strong>Absorption & Distribution:</strong></p>
+            <ul>
+                <li>Rapidly absorbed orally.</li>
+                <li>Maximum concentration reached in ~40 mins (immediate-release). Food delays absorption.</li>
+                <li><strong>Low Bioavailability (3-33%):</strong> Due to significant first-pass metabolism in the liver.</li>
+                <li>Freely crosses the blood-brain barrier.</li>
+            </ul>
+             <p><strong>Metabolism & Excretion:</strong></p>
+             <ul>
+                <li>Mainly metabolized in the liver by CYP1A2 enzyme (6-hydroxylation), followed by conjugation (sulfation/glucuronidation).</li>
+                <li>Metabolites excreted in urine (main one: 6-sulfatoxymelatonin).</li>
+                <li><strong>Half-life:</strong> Short (~45-65 mins for immediate-release).</li>
+             </ul>
+              <p><strong>Influencing Factors:</strong></p>
+             <ul>
+                <li><strong>Caffeine (CYP1A2 inhibitor):</strong> Increases bioavailability and half-life.</li>
+                <li><strong>Smoking (CYP1A2 inducer):</strong> Decreases bioavailability.</li>
+                <li><strong>Fluvoxamine (CYP1A2 inhibitor):</strong> Increases half-life.</li>
+                <li>Children have faster clearance than adults. No major sex differences noted.</li>
+             </ul>
+        </div>
+
+        <button class="accordion-button">Pharmacodynamics (How Melatonin affects the body)</button>
+        <div class="panel">
+            <p><strong>Receptors:</strong></p>
+            <ul>
+                <li>Binds primarily to two G-protein coupled receptors:
+                    <ul>
+                        <li><strong>MT1:</strong> Hypothesized to be linked to hypnotic (sleep-inducing) effects.</li>
+                        <li><strong>MT2:</strong> Hypothesized to be linked to circadian phase shifting and pain modulation.</li>
+                    </ul>
+                </li>
+                 <li>A third site, MT3 (enzyme quinone reductase 2), has been identified, but its role is less clear.</li>
+                <li>Receptors are found in the SCN, other brain areas, and peripheral tissues.</li>
+                <li>Binding inhibits adenylate cyclase, affecting gene expression related to circadian rhythms.</li>
+            </ul>
+             <p><strong>Receptor Sensitivity:</strong></p>
+            <ul>
+                <li>High concentrations (like from immediate-release spikes) can cause receptor desensitization/internalization in experimental models.</li>
+                <li>Physiological levels (mimicked by prolonged-release) may avoid this issue.</li>
+            </ul>
+        </div>
+        
+        <button class="accordion-button">Immediate vs. Prolonged-Release Formulations</button>
+        <div class="panel">
+            <p><strong>Immediate-Release (IR):</strong></p>
+            <ul>
+                <li>Rapid absorption, peak in ~40 mins.</li>
+                <li>Short half-life (~1 hour).</li>
+                <li>Levels drop quickly, potentially before natural melatonin would still be high.</li>
+                <li>May be better suited for sleep-onset difficulties.</li>
+                <li>Creates high peak concentrations, potentially causing receptor desensitization.</li>
+            </ul>
+            <p><strong>Prolonged-Release (PR) (e.g., Circadin®):</strong></p>
+            <ul>
+                <li>Slower absorption, delayed peak (90-210 mins).</li>
+                <li>Longer half-life (~3.5-4 hours).</li>
+                <li>Maintains stable plasma concentrations for 8-10 hours.</li>
+                <li>More closely mimics the natural physiological secretion pattern.</li>
+                <li>May be better suited for sleep maintenance difficulties.</li>
+                <li>Circadin® specifically approved by EMA for primary insomnia in adults >55 years.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Melatonin for Insomnia Tab -->
+    <div id="Insomnia" class="tab-content">
+        <h2>Melatonin for Insomnia Treatment</h2>
+
+        <button class="accordion-button">Primary Insomnia: Children & Adolescents (<18 yrs)</button>
+        <div class="panel">
+            <p>Insomnia is common (19-24%). Treatment should start with behavioral therapy.</p>
+            <ul>
+                <li><strong>First-line pharmacotherapy:</strong> Melatonin is generally considered the first choice when medication is needed. <span class="status status-positive" data-tooltip="Recommended as first-line drug if needed">Recommended</span></li>
+                <li><strong>Indication:</strong> Primarily for sleep-onset insomnia.</li>
+                <li><strong>Dosage (Typical):</strong>
+                    <ul>
+                        <li>Infants/Preschool: 1-3 mg</li>
+                        <li>School-age: 2.5-5 mg</li>
+                        <li>Adolescents: 1-5 mg</li>
+                        <li>Start low, administer 30-60 mins before bedtime. Limit use to <4 weeks.</li>
+                    </ul>
+                </li>
+                 <li><strong>Delayed Sleep Phase Syndrome (DSPS):</strong> Melatonin effective, especially low doses (e.g., 1mg) administered 3-5 hours before dim light melatonin onset (DLMO). <span class="status status-positive" data-tooltip="Effective for DSPS component">Effective for DSPS</span></li>
+                <li><strong>Formulation:</strong> Data mostly on immediate-release. No evidence PR is superior here.</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button">Primary Insomnia: Adults (≥18 yrs)</button>
+        <div class="panel">
+             <p>Cognitive Behavioral Therapy for Insomnia (CBT-I) is the first-line treatment.</p>
+             <ul>
+                <li><strong>General Recommendation (European Guideline 2017):</strong> Insufficient evidence to broadly recommend melatonin (IR or PR) for primary insomnia in adults <55 yrs. <span class="status status-insufficient" data-tooltip="Weak recommendation, low quality evidence">Insufficient Evidence</span></li>
+                <li><strong>Evidence Summary:</strong>
+                    <ul>
+                        <li>Meta-analyses show small, statistically significant decreases in sleep onset latency (time to fall asleep). Clinical significance debated.</li>
+                        <li>Effects on sleep quality are inconsistent or small.</li>
+                        <li>Safety profile appears good.</li>
+                    </ul>
+                </li>
+                <li><strong>Adults >55 years:</strong> Prolonged-Release Melatonin (Circadin® 2mg) is approved and recommended, particularly for sleep maintenance/quality issues. <span class="status status-positive" data-tooltip="PR form recommended for >55 yrs">Recommended >55 (PR)</span></li>
+             </ul>
+        </div>
+        
+        <button class="accordion-button">Comorbid Insomnia (Insomnia alongside other conditions)</button>
+        <div class="panel">
+             <ul>
+                <li><strong>Depression/Anxiety:</strong> Evidence for improving mood is lacking. PR melatonin (2.5-10mg) as adjunct to fluoxetine showed improved sleep and mood compared to placebo. May improve insomnia secondary to bipolar disorder. <span class="status status-mixed" data-tooltip="Potential adjunct benefit for sleep, less for mood">Mixed/Adjunct</span></li>
+                <li><strong>Schizophrenia:</strong> Small studies suggest IR (3mg) or PR (2mg) can improve sleep onset, reduce awakenings, and increase sleep duration. <span class="status status-mixed" data-tooltip="Some positive findings in small studies">Mixed</span></li>
+                <li><strong>Intellectual Disability / Autism Spectrum Disorder (ASD):</strong> Sleep disorders common, often linked to altered melatonin production. Melatonin (variable doses, IR/PR) decreases sleep onset latency, increases total sleep time, reduces awakenings. Improves caregiver quality of life. Level of evidence often low (small/poor studies). <span class="status status-positive" data-tooltip="Effective and safe, though evidence quality varies">Positive but Low Evidence</span></li>
+                <li><strong>Neurodegenerative Diseases (Alzheimer's, Parkinson's):</strong>
+                    <ul>
+                        <li>Lower CSF melatonin levels observed.</li>
+                        <li><em>Alzheimer's:</em> Small studies suggest modest benefits on sleep/cognition (3-5mg IR or 2mg PR), but results are conflicting. <span class="status status-mixed" data-tooltip="Conflicting results from small studies">Mixed/Conflicting</span></li>
+                        <li><em>Parkinson's:</em> Improves subjective sleep quality (small studies, variable doses). Particularly effective for REM Sleep Behavior Disorder (RBD). <span class="status status-positive" data-tooltip="Good for RBD, possible benefit for general sleep">Positive (especially RBD)</span></li>
+                     </ul>
+                 </li>
+                 <li><strong>Multiple Sclerosis (MS):</strong> 5mg melatonin improved sleep quality (but not fatigue) in one study. Lower inflammation markers noted. <span class="status status-mixed" data-tooltip="One study showed sleep benefit">Mixed/Limited</span></li>
+                 <li><strong>Chronic Pain:</strong> Preclinical evidence for analgesic effect (MT2). Clinical evidence limited/mixed. Some studies show reduced post-op pain. Small studies suggest benefit in fibromyalgia (3-5mg) and cancer pain (3mg IR). <span class="status status-mixed" data-tooltip="Limited/mixed evidence for pain conditions">Mixed/Limited</span></li>
+                 <li><strong>Restless Legs Syndrome (RLS):</strong> Symptoms often peak when melatonin is high. Exogenous melatonin may worsen RLS symptoms. <span class="status status-negative" data-tooltip="May worsen RLS symptoms">Potential Negative Effect</span></li>
+                 <li><strong>Hypertension:</strong> Insomnia increases risk. PR melatonin (2-3mg) significantly decreased nocturnal blood pressure (systolic/diastolic) in meta-analysis; IR did not. No effect on daytime BP. <span class="status status-positive" data-tooltip="PR form may lower nocturnal BP">Positive (PR for nocturnal BP)</span></li>
+                 <li><strong>Diabetes Mellitus:</strong> Reduced melatonin in diabetics (esp. with polyneuropathy). PR melatonin (Circadin 2mg) improved insomnia and HbA1c levels in one open-label study. <span class="status status-mixed" data-tooltip="One study suggests PR benefit for sleep & HbA1c">Mixed/Limited (PR)</span></li>
+             </ul>
+        </div>
+
+    </div>
+
+    <!-- Circadian Disorders Tab -->
+    <div id="Circadian" class="tab-content">
+        <h2>Melatonin for Circadian Rhythm Sleep-Wake Disorders</h2>
+        <p>Based largely on the 2015 AASM Clinical Practice Guideline recommendations.</p>
+
+        <button class="accordion-button">Delayed Sleep-Wake Phase Disorder (DSWPD)</button>
+        <div class="panel">
+            <p>Falling asleep and waking >2 hours later than desired/conventional times.</p>
+            <ul>
+                <li><strong>Adults:</strong> Melatonin (0.3-5mg) improves sleep latency. Evidence limited (small studies). Recommendation: Low strength. <span class="status status-mixed" data-tooltip="Low strength recommendation based on limited evidence">Low Evidence/Rec</span></li>
+                <li><strong>Children/Adolescents (no comorbidities):</strong> 0.05-0.15 mg/kg 1.5-2 hrs before bedtime showed modest improvement in sleep latency (one study). <span class="status status-mixed" data-tooltip="Based on one study">Low Evidence</span></li>
+                 <li><strong>Children/Adolescents (with psychiatric disorders):</strong> 3-5 mg IR between 6-7 PM showed advance in sleep onset (2 studies). <span class="status status-mixed" data-tooltip="Based on two studies">Low Evidence</span></li>
+                 <li><strong>Timing:</strong> Crucial - typically administered several hours before desired bedtime or natural DLMO to advance the clock.</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button">Advanced Sleep-Wake Phase Disorder (ASWPD)</button>
+        <div class="panel">
+             <p>Falling asleep and waking several hours earlier than desired/conventional times.</p>
+             <ul>
+                 <li>No systematic studies on melatonin use.</li>
+                 <li><strong>Recommendation:</strong> Not recommended due to lack of evidence. <span class="status status-negative" data-tooltip="No evidence to support use">Not Recommended</span></li>
+             </ul>
+        </div>
+        
+        <button class="accordion-button">Free-Running (Non-24-Hour) Sleep-Wake Rhythm Disorder (N24SWD)</button>
+        <div class="panel">
+             <p>Sleep-wake cycle is not entrained to the 24-hour day, often drifts later. Common in totally blind individuals.</p>
+             <ul>
+                 <li>Observational studies (small samples) show melatonin (0.5-10 mg) administered 1 hr before bedtime or at fixed time (e.g. 9 PM) is effective in entraining the rhythm.</li>
+                 <li><strong>Recommendation:</strong> Effective, but based on low level of evidence. <span class="status status-positive" data-tooltip="Effective, especially in blind, but low evidence level">Effective (Low Evidence)</span></li>
+             </ul>
+        </div>
+        
+        <button class="accordion-button">Irregular Sleep-Wake Rhythm Disorder (ISWRD)</button>
+        <div class="panel">
+             <p>Chaotic, unpredictable sleep-wake pattern across 24 hours. Often seen in dementia or neurological disorders.</p>
+             <ul>
+                <li><strong>Elderly with Dementia:</strong> AASM does NOT recommend melatonin (based on one study of 6mg PR showing no benefit, potential risks). <span class="status status-negative" data-tooltip="Not recommended due to lack of benefit and potential risks">Not Recommended (Dementia)</span></li>
+                 <li><strong>Children/Adolescents with Neurological Disorders:</strong> One study showed benefit with 2-10 mg melatonin 1 hr before bed. Recommendation grade is low, evidence level moderate. <span class="status status-mixed" data-tooltip="Low recommendation, moderate evidence for children/neuro disorders">Low/Moderate Evidence (Children/Neuro)</span></li>
+             </ul>
+        </div>
+    </div>
+
+    <!-- Conclusion Tab -->
+    <div id="Conclusion" class="tab-content">
+        <h2>Conclusions & Key Takeaways</h2>
+        <ul>
+            <li>Melatonin plays a crucial physiological role in regulating the sleep-wake cycle, with levels naturally declining with age.</li>
+            <li>Exogenous melatonin can be useful for certain sleep disorders, but evidence varies significantly by condition, age group, and formulation.</li>
+            <li><strong>Strongest Support:</strong>
+                <ul>
+                    <li>Sleep-onset insomnia in children/adolescents (often related to DSWPD). <span class="status status-positive">Positive</span></li>
+                    <li>Primary insomnia in adults >55 years (Prolonged-Release formulation). <span class="status status-positive">Positive (PR >55)</span></li>
+                    <li>REM Sleep Behavior Disorder (RBD) in Parkinson's Disease. <span class="status status-positive">Positive (RBD)</span></li>
+                    <li>Free-Running Disorder (N24SWD), especially in the blind. <span class="status status-positive">Positive</span></li>
+                    <li>Insomnia in children with ASD/Neurodevelopmental disorders. <span class="status status-positive">Positive (Low Evidence)</span></li>
+                </ul>
+            </li>
+             <li><strong>Weaker / Insufficient / Mixed Evidence:</strong>
+                <ul>
+                    <li>Primary insomnia in adults <55 years. <span class="status status-insufficient">Insufficient</span></li>
+                    <li>Delayed Sleep-Wake Phase Disorder (DSWPD) in adults. <span class="status status-mixed">Mixed/Low</span></li>
+                    <li>Insomnia comorbid with depression, schizophrenia, Alzheimer's, pain. <span class="status status-mixed">Mixed/Limited</span></li>
+                </ul>
+            </li>
+            <li><strong>Not Recommended / Potential Harm:</strong>
+                <ul>
+                     <li>Advanced Sleep-Wake Phase Disorder (ASWPD). <span class="status status-negative">Negative</span></li>
+                     <li>Irregular Sleep-Wake Rhythm in elderly with dementia. <span class="status status-negative">Negative</span></li>
+                     <li>Restless Legs Syndrome (RLS). <span class="status status-negative">Potential Negative</span></li>
+                 </ul>
+             </li>
+            <li><strong>Formulation Matters:</strong> Prolonged-release (PR) formulations better mimic physiological secretion and may be more effective for sleep maintenance and certain comorbidities (e.g., nocturnal hypertension, >55 insomnia). Immediate-release (IR) may be suited for sleep onset issues.</li>
+            <li><strong>Safety:</strong> Melatonin generally has a good safety profile with few side effects reported in studies.</li>
+            <li><strong>Important Note:</strong> Melatonin is a pharmacological agent, not just a nutritional supplement, and should be used judiciously, considering timing, dosage, and indication. More high-quality research is needed for many applications.</li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    // Function to switch tabs
+    function openTab(evt, tabName) {
+        var i, tabcontent, tabbuttons;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tabbuttons = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tabbuttons.length; i++) {
+            tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Accordion logic
+    var acc = document.getElementsByClassName("accordion-button");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    }
+
+    // Ensure the first tab is active on load
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelector(".tab-button").click(); 
+    });
+</script>
+
+</body>
+</html>
