@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idiopathic Intracranial Hypertension</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #007bff; /* Nature Reviews Blue */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .article-meta {
+            font-size: 0.9em;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            background-color: #e9ecef;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tabs button {
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 0.95em;
+            color: #007bff;
+            font-weight: 600;
+            flex-grow: 1; /* Distribute space */
+            text-align: center;
+        }
+
+        .tabs button:hover {
+            background-color: #ddd;
+        }
+
+        .tabs button.active {
+            background-color: #007bff;
+            color: white;
+            border-bottom: 3px solid #0056b3;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px 12px;
+            border-top: none;
+        }
+
+        /* Accordion */
+        .accordion-button {
+            background-color: #f1f1f1;
+            color: #444;
+            cursor: pointer;
+            padding: 12px 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1em;
+            transition: background-color 0.4s;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-button:hover, .accordion-button.active {
+            background-color: #e0e0e0;
+        }
+
+        .accordion-button::after {
+            content: '+'; /* Plus sign */
+            font-size: 1.3em;
+            color: #007bff;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .accordion-button.active::after {
+            content: "−"; /* Minus sign */
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .panel p, .panel ul, .panel div {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .key-points {
+            background-color: #e6f7ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .key-points h3 {
+            color: #0056b3;
+            margin-top:0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .status-positive { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-metabolic { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .status-emerging { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .status-management { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        .box-content {
+            border: 1px solid #007bff;
+            background-color: #f0f8ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .box-content h3 {
+            color: #0056b3;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Interactive Summary: Idiopathic Intracranial Hypertension (IIH)</h1>
+    <p class="article-meta">Based on: Yiangou A, Mollan SP, Sinclair AJ. Idiopathic intracranial hypertension: a step change in understanding the disease mechanisms. Nature Reviews Neurology. 2023;19:769-785.</p>
+
+    <div class="key-points">
+        <h3>Key Insights from the Review</h3>
+        <ul>
+            <li>IIH is evolving from a neuro-ophthalmic disorder to a probable systemic metabolic disease.</li>
+            <li>Features now include impaired fertility, gestational diabetes, pre-eclampsia, increased cardiometabolic risk, and cognitive dysfunction.</li>
+            <li>Comorbidities: PCOS, OSA, anxiety, depression.</li>
+            <li>Headache and ICP relationship is complex; specific signalling pathways (e.g., CGRP) are implicated.</li>
+            <li>Weight loss is the only established disease-modifying therapy; bariatric surgery shows sustained ICP control.</li>
+            <li>New metabolic therapies are emerging, e.g., GLP-1 receptor agonists (exenatide) significantly reduce ICP.</li>
+            <li>Adipose tissue dysfunction (priming for lipogenesis, centripetal distribution) and unique androgen excess promoting CSF secretion are key mechanistic insights.</li>
+        </ul>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'IntroEpidemiology')">Introduction & Epidemiology</button>
+        <button class="tab-button" onclick="openTab(event, 'DiseaseFeatures')">Disease Features</button>
+        <button class="tab-button" onclick="openTab(event, 'Monitoring')">Disease Monitoring</button>
+        <button class="tab-button" onclick="openTab(event, 'MetabolicAspects')">IIH as a Metabolic Disease</button>
+        <button class="tab-button" onclick="openTab(event, 'HeadacheManagement')">Headache & Management</button>
+        <button class="tab-button" onclick="openTab(event, 'Conclusion')">Conclusion</button>
+    </div>
+
+    <!-- Introduction & Epidemiology Tab -->
+    <div id="IntroEpidemiology" class="tab-content" style="display: block;">
+        <h2>Introduction & Epidemiology</h2>
+        <p>IIH, previously seen as mainly neuro-ophthalmic (raised ICP, headache, papilloedema, visual loss risk), is now being redefined as a probable metabolic disease with systemic manifestations. Over 95% affected are reproductive-age women with obesity. Incidence is rising with global obesity rates.</p>
+        
+        <button class="accordion-button">Epidemiology Details</button>
+        <div class="panel">
+            <ul>
+                <li><strong>Pooled Incidence (1988-2017):</strong> 1.2/100,000 per year (North America, Africa, Europe, Asia).</li>
+                <li><strong>Recent Rise in Developed Countries:</strong>
+                    <ul>
+                        <li>England (2016): 350% increase over 10 years (4.7/100,000 per year).</li>
+                        <li>Wales (2017): Prevalence 76/100,000; Incidence 7.8/100,000 per year.</li>
+                        <li>UK Women (2017): Prevalence 79/100,000; Incidence 9.3/100,000 per year.</li>
+                        <li>Highest in women aged 20-29 years (16.5/100,000 per year).</li>
+                    </ul>
+                </li>
+                <li><strong>Correlation with Obesity:</strong> Country-specific IIH incidence correlates with national obesity rates.</li>
+                <li><strong>Social Deprivation:</strong> Higher incidence in areas of social deprivation in the UK.</li>
+                <li><strong>Public Health Concern:</strong> Rising incidence, hospital admissions, and financial burden suggest IIH needs population-targeted prevention.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Disease Features Tab -->
+    <div id="DiseaseFeatures" class="tab-content">
+        <h2>Disease Features: Classical and Emergent</h2>
+
+        <button class="accordion-button">Classical Disease Features</button>
+        <div class="panel">
+            <ul>
+                <li><strong>Papilloedema:</strong> Can lead to visual loss.
+                    <ul>
+                        <li>Historically (1982): Severe/permanent visual loss in up to 25%.</li>
+                        <li>More recently (2013): 0.6-2% fully sight impaired. (Difference may be due to definition of visual loss).</li>
+                    </ul>
+                </li>
+                <li><strong>Other Visual Features:</strong> Transient visual obscurations (68%), perceived visual loss (32%), double vision (18%).</li>
+                <li><strong>Most Common Symptom:</strong> Headache (>80%).</li>
+                <li><strong>Other Symptoms:</strong> Back pain (53%), pulsatile tinnitus (52%), dizziness (52%), neck/radicular pain.</li>
+                <li><strong>IIH without Papilloedema (IIHWOP):</strong> Subclassification; cause of refractory headaches, visual/neurological disability. Potentially under-represented. Therapeutic suitability unclear.</li>
+            </ul>
+        </div>
+        
+        <div class="box-content">
+            <h3>Box 1: Emergent Features of IIH</h3>
+            <button class="accordion-button">Cognitive Function <span class="status status-emerging">New Understanding</span></button>
+            <div class="panel">
+                <ul>
+                    <li>Impairment associated with ICP and influences visual field performance.</li>
+                    <li><strong>Management:</strong> ICP reduction can improve cognition. Address modifiable factors (headache, mental health, OSA, medications).</li>
+                    <li>Studies confirm impairments in multiple domains (attention, visual-spatial, global scores). Persists at follow-up.</li>
+                    <li>Confounders: headache, BMI, mental health.</li>
+                    <li>Cognitive performance influenced by headache severity, depression, OSA.</li>
+                    <li>Association with neurophysiological tests (P300, contingent negative variation).</li>
+                </ul>
+            </div>
+
+            <button class="accordion-button">Reproductive Health <span class="status status-emerging">Significant Impact</span></button>
+            <div class="panel">
+                <ul>
+                    <li>Low fertility in people with IIH.</li>
+                    <li>Increased pregnancy complications vs. general population:
+                        <ul>
+                            <li>Pre-eclampsia (5.3-fold)</li>
+                            <li>Gestational diabetes (2.7-fold)</li>
+                        </ul>
+                    </li>
+                    <li>Increased elective caesarean delivery rates (2.4-fold).</li>
+                    <li><strong>Management:</strong> May require specialist obstetric input. Enhanced monitoring during pregnancy. Weight optimization and disease control pre-pregnancy recommended. Vaginal delivery generally safe.</li>
+                </ul>
+            </div>
+
+            <button class="accordion-button">Polycystic Ovarian Syndrome (PCOS) <span class="status status-emerging">Co-morbidity</span></button>
+            <div class="panel">
+                <ul>
+                    <li>1.5-fold increased risk in people with IIH vs. general population.</li>
+                    <li>Shared phenotype: reproductive-age women with obesity.</li>
+                    <li><strong>Management:</strong> May require specific management and specialist input for weight loss. Important for fertility management.</li>
+                </ul>
+            </div>
+
+            <button class="accordion-button">Obstructive Sleep Apnoea (OSA) <span class="status status-emerging">High Prevalence</span></button>
+            <div class="panel">
+                <ul>
+                    <li>High prevalence in IIH (33-63%). One study found 47% had OSA.</li>
+                    <li><strong>Management:</strong> Appropriate screening (e.g., STOP-BANG, which has 84% sensitivity in IIH). Referral to specialist services. Treatment can improve papilloedema. Overnight oximetry also used (49% yield).</li>
+                </ul>
+            </div>
+
+            <button class="accordion-button">Mental Health <span class="status status-emerging">Common Issue</span></button>
+            <div class="panel">
+                <ul>
+                    <li>Higher prevalence of depression and anxiety vs. general population. Similar prevalence to migraine sufferers.</li>
+                    <li>Psychiatric comorbidities (45%) associated with worse outcomes.</li>
+                    <li>Obesity not sole determinant; headache, migraine, BMI are risk factors.</li>
+                    <li><strong>Management:</strong> Screen for depression/anxiety, signpost management. Address modifiable risk factors (headache, medications).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Monitoring Tab -->
+    <div id="Monitoring" class="tab-content">
+        <h2>Advances in Disease Monitoring</h2>
+
+        <button class="accordion-button">Optical Coherence Tomography (OCT)</button>
+        <div class="panel">
+            <p>Mainstay of clinical practice for papilloedema management. Allows quantitative measures of optic nerve head (ONH) height/volume and qualitative anatomical findings.</p>
+            <ul>
+                <li><strong>Differentiation:</strong> Helps distinguish papilloedema from pseudopapilloedema (e.g., ONH drusen, peripapillary wrinkles).</li>
+                <li><strong>Prognosis:</strong> Can reveal intraretinal folds/fluid indicating poor prognosis if untreated. (Referenced Fig 1, 2, 3 in article for RNFL progression, disc volume assessment, and fluid).</li>
+                <li><strong>Correlation with ICP:</strong> OCT measures (e.g., central thickness) correlate with ICP, acting as a surrogate measure.</li>
+                <li><strong>Functional Correlation:</strong> Macular ganglion cell layer volume correlates with visual field mean deviation, predicting functional disability.</li>
+                <li><strong>Advantages over Visual Fields:</strong> Visual fields can be unreliable due to patient factors (cognitive deficits, symptoms, learning effects). OCT is more objective.</li>
+                <li><strong>Relapse Detection:</strong> Effective in identifying recurrent papilloedema (increased retinal nerve fibre layer thickness) even with optic atrophy.</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button">Telemetric ICP Monitoring</button>
+        <div class="panel">
+            <p>Increased use in neurosurgery over past 5-10 years. Allows long-term, repeated ICP measurement.</p>
+            <ul>
+                <li><strong>Use Cases:</strong> Complex IIH, post-shunt placement for monitoring and adjustment, suspected shunt failure, determining if headaches are due to high/low ICP.</li>
+                <li><strong>ICP Physiology Insights:</strong>
+                    <ul>
+                        <li>No diurnal ICP variation in active IIH with papilloedema.</li>
+                        <li>ICP increases with duration of supine position.</li>
+                        <li>ICP falls by ~51% when moving from lying to standing/sitting.</li>
+                        <li>Mean ICP rose 34% during prolonged supine position (may explain worse morning headaches/T VOs).</li>
+                        <li>Brief supine/standing measurements can predict prolonged daytime ICP.</li>
+                    </ul>
+                </li>
+                <li><strong>Waveform Analysis:</strong> Pulse amplitude can indicate intracranial compliance.</li>
+                <li><strong>Future Research:</strong> Needed for feasibility, safety, efficacy over longer periods in normal daily activities.</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button">Headache Monitoring</button>
+        <div class="panel">
+            <ul>
+                <li>Accurate phenotyping (ICHD-3 criteria) is essential.</li>
+                <li><strong>Tools:</strong>
+                    <ul>
+                        <li>Headache diaries: Frequency, severity, analgesic use.</li>
+                        <li>Self-reported assessments: Headache Impact Test-6 (HIT-6), Hospital Anxiety and Depression Scale (HADS).</li>
+                        <li>Quality of life measures: Medical Outcomes Study 36-item short form (SF-36).</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- IIH as a Metabolic Disease Tab -->
+    <div id="MetabolicAspects" class="tab-content">
+        <h2>IIH as a Systemic Metabolic Disease</h2>
+        <p>Evidence points to IIH as a disease of altered CSF regulation with strong metabolic and hormonal underpinnings, rather than purely idiopathic.</p>
+
+        <div class="box-content">
+            <h3>Box 2: IIH Emerging as a Systemic Metabolic Disease - Key Findings & Impact</h3>
+            <button class="accordion-button">Key Metabolic & Hormonal Findings</button>
+            <div class="panel">
+                <ul>
+                    <li><strong>Androgens:</strong> <span class="status status-metabolic">Unique Profile</span>
+                        <ul>
+                            <li>Unique hormonal signature of androgen excess (elevated testosterone in serum & CSF).</li>
+                            <li>Testosterone increases CSF production in vitro and in vivo (rats).</li>
+                            <li>Elevated 5α-reductase activity. Markers of hypothalamic-pituitary axis activation.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Glucocorticoids:</strong> <span class="status status-metabolic">Dysregulation</span>
+                        <ul>
+                            <li>Dysregulation with higher activity of 5α-reductase and 11β-hydroxysteroid dehydrogenase type 1 (11β-HSD1) in urine and adipose tissue.</li>
+                            <li>11β-HSD1 (converts cortisone to cortisol) found in choroid plexus, influences CSF cortisol.</li>
+                            <li>Inhibition of 11β-HSD1 may be associated with ICP reduction.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Perturbed Metabolism (Metabolomics):</strong> <span class="status status-metabolic">Altered Pathways</span>
+                        <ul>
+                            <li>Altered amino acid pathways (arginine, proline, histidine).</li>
+                            <li>Altered acylpyruvates (formylpyruvate, maleylpyruvate-fumarylpyruvate) - lower in CSF, higher in serum.</li>
+                            <li>Altered lipid profile (glycerophospholipids, ceramides) that correlates with ICP.</li>
+                            <li>Altered CSF-to-serum urea gradient. Raised CSF acetate concentrations.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Insulin & Adipose Tissue:</strong> <span class="status status-metabolic">Dysfunction</span>
+                        <ul>
+                            <li>Increased insulin resistance (correlates with ICP and centripetal adiposity).</li>
+                            <li>Truncal/centripetal fat distribution (correlates with ICP).</li>
+                            <li>Increased leptin secretion.</li>
+                            <li>Adipocytes transcriptionally primed for lipogenesis and weight gain; altered lipid metabolic pathways.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <button class="accordion-button">Impact of Metabolic Dysregulation</button>
+            <div class="panel">
+                <ul>
+                    <li><strong>Cardiovascular Risk:</strong> <span class="status status-metabolic">Twofold Increased</span>
+                         Twofold increased risk of cardiovascular events (heart failure, ischemic heart disease, stroke/TIA) vs. matched controls, independent of obesity. 55% increased hypertension risk, 30% increased type 2 diabetes risk.
+                    </li>
+                    <li><strong>Reproductive Health:</strong> <span class="status status-metabolic">Adverse Outcomes</span>
+                        Lower live birth rate, increased risk of pre-eclampsia and gestational diabetes.
+                    </li>
+                    <li><strong>Metabolic Health:</strong> <span class="status status-metabolic">Compromised</span>
+                        Increased risk of type 2 diabetes and gestational diabetes.
+                    </li>
+                    <li><strong>Weight Loss Benefit:</strong> <span class="status status-metabolic">Therapeutic Link</span>
+                        Bariatric surgery reduces ICP and is associated with increased GLP-1 secretion in line with ICP reduction.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <button class="accordion-button">CSF Dynamics and Glymphatics</button>
+        <div class="panel">
+            <ul>
+                <li><strong>CSF Production:</strong> Likely elevated in IIH (pilot study: mean 86 ml/h vs. normal 18-24 ml/h). Mainly at choroid plexus via Na+/K+ ATPase.</li>
+                <li><strong>Potential Targets:</strong> Channels/receptors in CSF dynamics (aquaporins, Na-K-Cl cotransporter, GLUT1, TRVP4).</li>
+                <li><strong>Glymphatic System:</strong> Growing evidence for involvement of elevated cerebral venous sinus pressure and dysregulation of the glymphatic system (transports fluid via peri-arterial channels, perivenous spaces, lymphatics). Dysfunction of aquaporins, pro-inflammatory profile, neurogliovascular unit disruption proposed.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Headache & Management Tab -->
+    <div id="HeadacheManagement" class="tab-content">
+        <h2>IIH Headache & Targeted Management</h2>
+
+        <button class="accordion-button">Understanding IIH Headache</button>
+        <div class="panel">
+            <ul>
+                <li>Predominant disabling symptom, drives poor quality of life.</li>
+                <li><strong>Frequency:</strong> >80% report headache. 3-fold increased hazard for new headache, >2-fold for new migraine vs. women without IIH.</li>
+                <li><strong>Phenotype:</strong> Often resembles migraine (pressure 47%, throbbing 42%). Associated features: nausea (47%), vomiting (17%), photophobia (70%), phonophobia (52%), exacerbation on physical activity (50%).</li>
+                <li><strong>Persistent Post-IIH Headache:</strong> Can occur after papilloedema resolution, often chronic migraine-like.</li>
+                <li><strong>Medication Challenges:</strong> High opiate prescription rates (2x migraine controls). More preventative medication use than migraine controls. Medication overuse common (≥37%).</li>
+                <li><strong>Mechanisms:</strong>
+                    <ul>
+                        <li><strong>ICP Relationship:</strong> Debated. Acute ICP lowering (LP) improves headache in 71-72%. Bariatric surgery (reduces ICP) improves headache. However, 11β-HSD1 inhibitor RCT (reduced ICP) didn't improve chronic headache. Acetazolamide RCT (reduced ICP) no headache improvement. Relationship complex, likely changes over disease course.</li>
+                        <li><strong>Central Sensitization:</strong> Suggested by migraine-like phenotype and correlation of ICP with cutaneous allodynia.</li>
+                        <li><strong>Trigeminovascular System & CGRP:</strong> CGRP implicated. Blocking CGRP (erenumab) prevented raised ICP headache in a case series and showed benefit in a prospective open-label study for persistent post-IIH headache.</li>
+                        <li><strong>Metabolomic Links:</strong> Altered CSF-serum urea gradient and raised CSF acetate correlate with headache severity.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="box-content">
+            <h3>Box 3: Principles of IIH Management</h3>
+            <ul>
+                <li><strong>Treat Underlying Disease with Weight Loss:</strong> <span class="status status-management">Disease-Modifying</span>
+                    <ul>
+                        <li>Bariatric surgery is evidenced for long-term ICP control. Average 24% weight loss associated with disease remission (ICP <25 cmCSF).</li>
+                    </ul>
+                </li>
+                <li><strong>Protect Vision:</strong> <span class="status status-management">Critical</span>
+                    <ul>
+                        <li>Prompt surgical options for immediate threat to vision.</li>
+                        <li>Medical approaches if no immediate vision threat.</li>
+                    </ul>
+                </li>
+                <li><strong>Reduce Headache Burden:</strong> <span class="status status-management">Symptomatic Relief</span>
+                    <ul>
+                        <li>Target underlying phenotype.</li>
+                        <li>Cautious use of headache therapies (consider weight gain, mood effects).</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <button class="accordion-button">Weight-Loss Therapies</button>
+        <div class="panel">
+            <ul>
+                <li><strong>Calorie Restriction:</strong> Prospective studies show improved clinical outcomes.</li>
+                <li><strong>Bariatric Surgery:</strong> RCT showed it's disease-modifying for long-term ICP control vs. community weight management. Significant ICP lowering at 12 & 24 months, more weight loss, better QoL. ICP improvements seen as early as 2 weeks post-op (gut hormone changes?). Cost-effective. Access varies.</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button">Drug Targeting (Current & Investigational)</button>
+        <div class="panel">
+            <ul>
+                <li><strong>Licensed Therapies:</strong> None.</li>
+                <li><strong>Acetazolamide:</strong> Most commonly prescribed (58% in UK first year). IIHTT (USA): modest visual field improvement with low-sodium diet vs. diet alone. Target 4g/day (mean 2.5g achieved). Poorly tolerated (48% withdrawal in smaller RCT). Use is physician-dependent.</li>
+                <li><strong>Other Diuretics (Topiramate etc.):</strong> Off-label. Topiramate prescribed in 20% (UK). Open-label study exists, but no placebo control. Reduces ICP more than acetazolamide in healthy rats. Furosemide/amiloride data limited/old.</li>
+                <li><strong>IIH Headache Management:</strong>
+                    <ul>
+                        <li>Therapeutic LPs: Minimal efficacy for headache, risk of exacerbation, traumatizing. Not recommended.</li>
+                        <li>Weight loss (low-calorie diet): Significantly improves headache in newly diagnosed IIH. Bariatric surgery trial didn't show significant headache reduction (not primary endpoint).</li>
+                        <li>Migraine preventatives (topiramate, candesartan, onabotulinum toxin A): Off-label, no evidence for IIH, choose carefully (avoid weight gain/mood worsening).</li>
+                        <li>Acute migraine-like attacks: Triptans + simple analgesic + prokinetic anti-emetic.</li>
+                        <li>Medication Overuse: Educate early.</li>
+                        <li>CGRP Blockade (e.g., Erenumab): Open-label study showed significant reduction in headache burden at 12 months for persistent post-IIH headache. Retrospective review less conclusive. Caution: may mask IIH relapse. Regular fundoscopy recommended.</li>
+                    </ul>
+                </li>
+                <li><strong>Potential Novel Targeted Management:</strong>
+                    <ul>
+                        <li><strong>11β-HSD1 Inhibitor (AZD4017):</strong> Phase II RCT: significantly reduced ICP vs. baseline (by 4.3 cmCSF), but primary outcome (vs. placebo) not met. Well tolerated. Improved lipid profiles, increased lean muscle mass. Not evaluated further in IIH.</li>
+                        <li><strong>GLP-1 Receptor Agonists:</strong>
+                            <ul>
+                                <li>GLP1Rs in choroid plexus. Exenatide modulates CSF secretion in vitro, reduces ICP in rats (45-55%).</li>
+                                <li><em>Exenatide:</em> Phase II RCT (telemetric ICP monitors): significant ICP reduction vs. placebo at 2.5h, 24h, 12 weeks (by 5.7, 6.4, 5.6 cmCSF respectively). Paved way for Phase III trial of once-weekly exenatide (Presendin, NCT05347147).</li>
+                                <li><em>Liraglutide/Semaglutide:</em> Open-label case-control: more effective for weight loss and headache frequency vs. usual care. No ICP/visual data.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <button class="accordion-button">Surgical Interventions</button>
+        <div class="panel">
+            <ul>
+                <li>For sight-threatening disease. Consensus on timing/type lacking internationally.</li>
+                <li><strong>CSF Diversion (Shunts):</strong> Well-established effectiveness. High failure/complication rates (30-50% revision in 1st year). Characterized cohort needing shunts: mean LP pressure 45 cmCSF, Frisén grade ≥4, VF mean deviation -11 dB.</li>
+                <li><strong>Optic Nerve Sheath Fenestration (ONSF):</strong> Effective for vision preservation in refractory IIH. Complications include optic nerve fibrosis, need for revision.</li>
+                <li><strong>Venous Sinus Stenting:</strong> Growing supporting evidence, but lack of RCTs/long-term data prevents routine use.</li>
+                <li>Trial assessing surgical interventions terminated due to poor recruitment. New trial (shunting vs. stenting) enrolling (ISRCTN57142415).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Conclusion Tab -->
+    <div id="Conclusion" class="tab-content">
+        <h2>Conclusion & Future Directions</h2>
+        <ul>
+            <li>Substantial progress in understanding IIH mechanisms: no longer "idiopathic" but related to systemic metabolic and hormonal perturbations.</li>
+            <li>Key features: abnormal metabolome, unique androgen signature, dysregulated glucocorticoids, insulin resistance, type 2 diabetes risk, twofold increased cardiovascular risk, centripetal adiposity, adipose tissue primed for lipogenesis.</li>
+            <li>Weight loss is the only established disease-modifying therapy; bariatric surgery offers long-term ICP control.</li>
+            <li>Clinical spectrum: impaired fertility, pregnancy complications, cognitive dysfunction, OSA, adverse mental health. Clinicians should address these.</li>
+            <li><strong>Management:</strong> Requires multidisciplinary approach (endocrinology lead suggested). Specialist weight services crucial.</li>
+            <li><strong>Therapeutic Pipeline:</strong> Targeting GLP1R (exenatide) is a promising avenue. CGRP identified as a target for IIH headache.</li>
+            <li><strong>Disease Monitoring:</strong> OCT is key for quantifying papilloedema and as ICP surrogate, superior to visual fields for objective monitoring. Telemetric ICP monitoring aids complex disease management.</li>
+            <li><strong>Future Redefinition:</strong> Given evidence, "metabolic intracranial hypertension" might be a more appropriate term.</li>
+            <li><strong>Need:</strong> Carefully planned therapeutic pipelines and clinical trials to deliver targeted therapeutics.</li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tabbuttons;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tabbuttons = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tabbuttons.length; i++) {
+            tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    var acc = document.getElementsByClassName("accordion-button");
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if(document.querySelector(".tab-button.active")){
+             document.querySelector(".tab-button.active").click();
+        } else if (document.querySelector(".tab-button")){
+             document.querySelector(".tab-button").click();
+        }
+    });
+</script>
+
+</body>
+</html>
