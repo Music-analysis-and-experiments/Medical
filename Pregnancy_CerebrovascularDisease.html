@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerebrovascular Disease in Pregnancy: An Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-inactive {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-btn.active {
+            border-bottom-color: #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .timeline-item {
+            cursor: pointer;
+        }
+        .brain-area {
+            fill: #d1d5db;
+            stroke: #4b5563;
+            stroke-width: 1.5;
+            transition: fill 0.3s ease;
+            cursor: pointer;
+        }
+        .brain-area:hover, .brain-area.highlight {
+            fill: #f59e0b;
+        }
+        .brain-text {
+            pointer-events: none;
+            font-size: 10px;
+            font-weight: bold;
+            fill: #1f2937;
+        }
+        .key-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Cerebrovascular Disease in Pregnancy & Postpartum</h1>
+            <p class="mt-1 text-sm sm:text-base text-gray-500">An interactive clinical guide for the Neuro-Hospitalist</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Introduction -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">Overview</h2>
+            <p class="text-gray-600">This visualization summarizes key points from the review article 'Cerebrovascular disease in pregnancy and postpartum' by Santos and Aguiar de Sousa. It focuses on diagnosis, management, and recent findings for common cerebrovascular complications in pregnancy and the puerperium. Use the interactive elements to explore specific conditions, management pathways, and risk periods.</p>
+        </div>
+
+        <!-- Interactive Brain Diagram & Key Conditions -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold text-center mb-4">Interactive Brain Pathology Map</h3>
+                <svg id="brain-svg" viewBox="0 0 200 180" class="w-full h-auto">
+                    <!-- Brain Parts -->
+                    <path id="pres-area" class="brain-area" d="M 100,20 Q 50,10 40,60 T 45,120 Q 50,170 100,160 Q 150,170 155,120 T 160,60 Q 150,10 100,20 Z M 100,20 Q 120,40 100,90 Q 80,40 100,20 Z M 60,70 A 20,20 0 0,1 80,70" data-condition="pres" />
+                    <text x="100" y="140" class="brain-text" text-anchor="middle">PRES (Posterior)</text>
+                    <path id="rcvs-area" class="brain-area" d="M 100,20 Q 50,10 40,60 T 45,120 Q 50,170 100,160 Q 150,170 155,120 T 160,60 Q 150,10 100,20 Z" data-condition="rcvs" style="fill: none; stroke: #fb923c; stroke-width: 2; stroke-dasharray: 4,2;"/>
+                    <text x="100" y="50" class="brain-text" text-anchor="middle">RCVS (Vasoconstriction)</text>
+                    <path id="hemorrhage-area" class="brain-area" d="M 70,80 a 15,15 0 1,1 30,0 a 15,15 0 1,1 -30,0" data-condition="hemorrhagic" />
+                    <text x="85" y="85" class="brain-text" text-anchor="middle">ICH</text>
+                     <path id="ischemic-area" class="brain-area" d="M 130,90 a 15,15 0 1,1 30,0 a 15,15 0 1,1 -30,0" data-condition="ischemic" />
+                    <text x="145" y="95" class="brain-text" text-anchor="middle">Ischemia</text>
+                    <path id="cvt-area" class="brain-area" d="M 100,20 Q 50,10 40,60 T 45,120" style="fill: none; stroke: #3b82f6; stroke-width: 3;" data-condition="cvt"/>
+                    <text x="60" y="40" class="brain-text" text-anchor="middle" transform="rotate(-35, 60, 40)">CVT (Sinus)</text>
+                </svg>
+                <div id="brain-tooltip" class="mt-4 text-center p-3 bg-gray-100 rounded-md min-h-[80px] flex items-center justify-center">
+                    <p class="text-sm text-gray-700">Hover over a brain area to see associated conditions.</p>
+                </div>
+                 <div class="mt-4 space-y-2">
+                    <div class="flex items-center"><span class="key-dot" style="background-color: #f59e0b;"></span><span class="text-sm">PRES / Hemorrhage / Ischemia</span></div>
+                    <div class="flex items-center"><span class="key-dot" style="border: 2px dashed #fb923c;"></span><span class="text-sm">RCVS (Diffuse Vasoconstriction)</span></div>
+                    <div class="flex items-center"><span class="key-dot" style="background-color: #3b82f6; width: 20px; height: 4px; border-radius: 2px;"></span><span class="text-sm">CVT (Venous Sinuses)</span></div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold text-center mb-4">Key Conditions at a Glance</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Condition Cards -->
+                    <div id="card-preeclampsia" class="condition-card p-4 border rounded-lg hover:shadow-lg transition-shadow" data-condition="preeclampsia">
+                        <h4 class="font-bold text-indigo-700">Preeclampsia / Eclampsia</h4>
+                        <p class="text-sm text-gray-600 mt-1">Hypertensive disorder leading to multi-organ dysfunction. Click for details.</p>
+                    </div>
+                    <div id="card-pres" class="condition-card p-4 border rounded-lg hover:shadow-lg transition-shadow" data-condition="pres">
+                        <h4 class="font-bold text-amber-700">PRES</h4>
+                        <p class="text-sm text-gray-600 mt-1">Posterior Reversible Encephalopathy Syndrome. Click for details.</p>
+                    </div>
+                    <div id="card-rcvs" class="condition-card p-4 border rounded-lg hover:shadow-lg transition-shadow" data-condition="rcvs">
+                        <h4 class="font-bold text-orange-700">RCVS</h4>
+                        <p class="text-sm text-gray-600 mt-1">Reversible Cerebral Vasoconstriction Syndrome. Click for details.</p>
+                    </div>
+                    <div id="card-hemorrhagic" class="condition-card p-4 border rounded-lg hover:shadow-lg transition-shadow" data-condition="hemorrhagic">
+                        <h4 class="font-bold text-red-700">Hemorrhagic Stroke</h4>
+                        <p class="text-sm text-gray-600 mt-1">Includes SAH and ICH. Often linked to AVMs or aneurysms. Click for details.</p>
+                    </div>
+                     <div id="card-ischemic" class="condition-card p-4 border rounded-lg hover:shadow-lg transition-shadow" data-condition="ischemic">
+                        <h4 class="font-bold text-cyan-700">Ischemic Stroke</h4>
+                        <p class="text-sm text-gray-600 mt-1">Increased risk in pregnancy, especially third trimester and puerperium. Click for details.</p>
+                    </div>
+                    <div id="card-cvt" class="condition-card p-4 border rounded-lg hover:shadow-lg transition-shadow" data-condition="cvt">
+                        <h4 class="font-bold text-blue-700">Cerebral Venous Thrombosis</h4>
+                        <p class="text-sm text-gray-600 mt-1">More common in women; risk increased by pregnancy and postpartum state. Click for details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pregnancy Timeline -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4 text-center">Clinical Timeline: Pregnancy & Postpartum Risk Periods</h2>
+            <div class="relative w-full h-2 bg-gray-200 rounded-full mt-8 mb-12">
+                <div class="absolute top-1/2 left-0 h-2 bg-gradient-to-r from-green-300 via-yellow-300 to-red-400 rounded-full" style="width: calc(100% * 40 / 52);"></div>
+                <div class="absolute top-1/2 h-2 bg-purple-400 rounded-r-full" style="left: calc(100% * 40 / 52); width: calc(100% * 12 / 52);"></div>
+
+                <!-- Timeline Points -->
+                <div class="absolute top-1/2 -translate-y-1/2" style="left: calc(100% * 12 / 52);">
+                    <div class="timeline-item w-4 h-4 bg-gray-700 rounded-full border-2 border-white" data-info="<strong>First Trimester (Weeks 1-12):</strong> AVM rupture risk may increase. Organogenesis occurs, making it a vulnerable period for radiation."></div>
+                    <span class="absolute -top-6 text-xs text-gray-600 w-20 text-center -ml-8">1st Tri</span>
+                </div>
+                 <div class="absolute top-1/2 -translate-y-1/2" style="left: calc(100% * 20 / 52);">
+                    <div class="timeline-item w-4 h-4 bg-indigo-600 rounded-full border-2 border-white" data-info="<strong>From 20 Weeks:</strong> Risk of Preeclampsia begins. Characterized by new-onset hypertension."></div>
+                    <span class="absolute -top-6 text-xs text-indigo-600 w-20 text-center -ml-8">Preeclampsia</span>
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2" style="left: calc(100% * 32 / 52);">
+                    <div class="timeline-item w-4 h-4 bg-red-600 rounded-full border-2 border-white" data-info="<strong>3rd Trimester (Weeks 28-40):</strong> Peak risk for aneurysmal SAH (30-34 weeks). Increased risk for both Ischemic & Hemorrhagic Stroke, and HELLP syndrome."></div>
+                     <span class="absolute -top-6 text-xs text-red-600 w-20 text-center -ml-8">Peak Risk</span>
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2" style="left: calc(100% * 40 / 52);">
+                    <div class="timeline-item w-4 h-4 bg-black rounded-full border-2 border-white" data-info="<strong>Delivery:</strong> Straining during labor can be a risk factor for arterial dissection."></div>
+                     <span class="absolute -top-6 text-xs text-gray-800 w-20 text-center -ml-8">Delivery</span>
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2" style="left: calc(100% * 46 / 52);">
+                    <div class="timeline-item w-4 h-4 bg-purple-600 rounded-full border-2 border-white" data-info="<strong>Postpartum (up to 12 weeks):</strong> Highest risk for CVT, RCVS ('postpartum cerebral angiopathy'), and overall stroke."></div>
+                     <span class="absolute -bottom-7 text-xs text-purple-600 w-20 text-center -ml-8">Postpartum</span>
+                </div>
+
+            </div>
+            <div id="timeline-tooltip" class="mt-4 text-center p-3 bg-gray-100 rounded-md min-h-[60px] flex items-center justify-center">
+                <p class="text-sm text-gray-700">Hover over a point on the timeline for details.</p>
+            </div>
+        </div>
+
+        <!-- Management & Imaging -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Clinical Management Tools</h2>
+            <!-- Tabs -->
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="imaging">Diagnostic Imaging</button>
+                    <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="management">Acute Stroke Management</button>
+                    <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="prevention">Secondary Prevention</button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="mt-6">
+                <div id="imaging" class="tab-content active">
+                    <h3 class="text-lg font-semibold mb-3">Brain Imaging in Pregnancy & Puerperium</h3>
+                     <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modality</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recommendation</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contrast Use</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Safety Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">MRI</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500"><strong>Modality of choice.</strong> 1.5T preferred. Use prudently, only when clinically indicated.</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">Gadolinium crosses the placenta. Limit use to situations where benefit is significant. Breastfeeding can continue.</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">No documented teratogenesis. Reduce noise exposure for fetus. Some suggest delaying until after 1st trimester if possible.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">CT Scan</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500"><strong>Do not withhold in a suspected disabling stroke</strong> if MRI is not readily available.</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">Iodinated contrast crosses the placenta. Use only if absolutely required. CTA should not be withheld for suspected LVO. Breastfeeding can continue.</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">Minimal fetal irradiation from head/neck scans, below teratogenic threshold. Consider pelvic shielding. Track cumulative radiation.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="management" class="tab-content">
+                    <h3 class="text-lg font-semibold mb-3">Acute Ischemic Stroke Management Flowchart</h3>
+                    <div class="text-center p-4">
+                        <div class="relative flex flex-col items-center">
+                            <!-- Start -->
+                            <div class="p-4 bg-blue-100 border-2 border-blue-500 rounded-lg shadow-md w-full max-w-md">
+                                <p class="font-bold">Pregnant patient with suspected Acute Disabling Ischemic Stroke</p>
+                            </div>
+                            <div class="h-8 w-1 bg-gray-400"></div>
+
+                            <!-- Step 1 -->
+                            <div class="p-4 bg-yellow-100 border-2 border-yellow-500 rounded-lg shadow-md w-full max-w-md">
+                                <p class="font-bold">Immediate Assessment</p>
+                                <p class="text-sm">Involve both obstetrical and stroke specialists. Maternal health is priority.</p>
+                            </div>
+                            <div class="h-8 w-1 bg-gray-400"></div>
+
+                             <!-- Step 2 -->
+                            <div class="p-4 bg-green-100 border-2 border-green-500 rounded-lg shadow-md w-full max-w-md">
+                                <p class="font-bold">Emergency Brain Imaging</p>
+                                <p class="text-sm">MRI preferred, but do not delay for CT/CTA if faster.</p>
+                            </div>
+                            <div class="h-8 w-1 bg-gray-400"></div>
+                            
+                            <!-- Decision -->
+                            <div class="p-4 bg-purple-100 border-2 border-purple-500 rounded-lg shadow-md w-full max-w-md">
+                                <p class="font-bold">Consider Reperfusion Therapies</p>
+                                <p class="text-sm">Informed consent from patient/family crucial. Case-by-case decision.</p>
+                            </div>
+
+                            <!-- Branches -->
+                            <div class="flex justify-around w-full max-w-2xl mt-4">
+                               <div class="h-8 w-full border-t-2 border-gray-400 -mt-4"></div>
+                            </div>
+                             <div class="flex justify-around w-full max-w-2xl mt-4 relative -top-8">
+                                <div class="w-1/2 flex flex-col items-center relative">
+                                    <div class="h-8 w-1 bg-gray-400 transform -translate-y-8"></div>
+                                    <div class="p-3 bg-orange-100 border-2 border-orange-500 rounded-lg shadow w-11/12">
+                                        <h4 class="font-bold">IV Thrombolysis (Alteplase)</h4>
+                                        <p class="text-xs mt-1">"May be considered when anticipated benefits of treating moderate/severe stroke outweigh risks of uterine bleeding." rTPA does not cross placenta. Caution if stroke complicates preeclampsia. Risk in early postpartum not well established.</p>
+                                    </div>
+                                </div>
+                                <div class="w-1/2 flex flex-col items-center relative">
+                                    <div class="h-8 w-1 bg-gray-400 transform -translate-y-8"></div>
+                                    <div class="p-3 bg-teal-100 border-2 border-teal-500 rounded-lg shadow w-11/12">
+                                        <h4 class="font-bold">Mechanical Thrombectomy (EVT)</h4>
+                                        <p class="text-xs mt-1">"Pregnancy should not be a contraindication" for LVO. Benefit expected to outweigh risk. Minimize radiation exposure with abdominal shielding.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prevention" class="tab-content">
+                    <h3 class="text-lg font-semibold mb-3">Secondary Prevention in Future Pregnancies</h3>
+                    <ul class="space-y-4">
+                        <li class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-gray-800">History of Preeclampsia/Eclampsia</h4>
+                            <p class="mt-1 text-sm text-gray-600">Low-dose aspirin (12-28 weeks gestation until delivery). Consider calcium supplementation if dietary intake is low.</p>
+                        </li>
+                        <li class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-gray-800">History of Ischemic Stroke</h4>
+                            <p class="mt-1 text-sm text-gray-600">Low-dose aspirin is reasonable. For high-risk cardioembolism, LMWH or unfractionated heparin should be continued. Warfarin is teratogenic (esp. 1st tri). Avoid statins.</p>
+                        </li>
+                        <li class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-gray-800">History of Hemorrhagic Stroke</h4>
+                            <p class="mt-1 text-sm text-gray-600">Optimize long-term blood pressure control. Re-discuss treatment of unruptured aneurysms/AVMs before future pregnancy.</p>
+                        </li>
+                        <li class="p-4 bg-gray-100 rounded-lg">
+                            <h4 class="font-semibold text-gray-800">History of Cerebral Venous Thrombosis (CVT)</h4>
+                            <p class="mt-1 text-sm text-gray-600">Prophylaxis with LMWH during pregnancy and puerperium is associated with lower rates of recurrent thrombotic events and miscarriage.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal modal-inactive fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <h3 id="modal-title" class="text-xl font-bold text-gray-900"></h3>
+                    <button id="modal-close" class="text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                <div id="modal-content" class="mt-4 text-gray-600 space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Modal functionality
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            const modalClose = document.getElementById('modal-close');
+
+            const openModal = (title, content) => {
+                modalTitle.innerHTML = title;
+                modalContent.innerHTML = content;
+                modal.classList.remove('modal-inactive');
+                modal.classList.add('modal-active');
+            };
+
+            const closeModal = () => {
+                modal.classList.remove('modal-active');
+                modal.classList.add('modal-inactive');
+            };
+
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Condition data for modal
+            const conditionDetails = {
+                preeclampsia: {
+                    title: 'Preeclampsia / Eclampsia',
+                    content: `
+                        <p>A hypertensive disorder of pregnancy, now defined as new-onset persistent hypertension after 20 weeks gestation PLUS one of: proteinuria, thrombocytopenia, renal insufficiency, impaired liver function, pulmonary edema, or persistent cerebral/visual symptoms. <strong>Proteinuria is no longer mandatory for diagnosis.</strong></p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Severe Features:</strong> Neurological dysfunction (intractable headache, visual changes), HELLP syndrome (Hemolysis, Elevated Liver enzymes, Low Platelets).</li>
+                            <li><strong>Eclampsia:</strong> New-onset tonic-clonic seizures in this setting. A major cause of maternal death.</li>
+                            <li><strong>Management:</strong> Magnesium sulfate for seizure ppx/treatment. Promptly treat severe HTN with labetalol, hydralazine, or nifedipine.</li>
+                            <li><strong>Associated Risks:</strong> PRES, RCVS, Ischemic/Hemorrhagic Stroke, CVT.</li>
+                        </ul>
+                    `
+                },
+                pres: {
+                    title: 'Posterior Reversible Encephalopathy Syndrome (PRES)',
+                    content: `
+                        <p>Often considered "obstetric PRES" when occurring with eclampsia. Characterized by headache, seizures, altered mental status, and visual changes.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Pathophysiology:</strong> Failure of cerebral autoregulation leading to vasogenic edema.</li>
+                            <li><strong>Radiology:</strong> Typically shows bilateral vasogenic edema in posterior cerebral regions (parieto-occipital), which is often reversible after managing the underlying cause (e.g., controlling blood pressure).</li>
+                            <li><strong>Overlap:</strong> More than half of PRES patients have cerebral artery narrowing on vascular imaging, overlapping with RCVS.</li>
+                        </ul>
+                    `
+                },
+                rcvs: {
+                    title: 'Reversible Cerebral Vasoconstriction Syndrome (RCVS)',
+                    content: `
+                        <p>Also known as postpartum cerebral angiopathy. More common in the postpartum period.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Presentation:</strong> Recurrent "thunderclap" headaches, often triggered by Valsalva.</li>
+                            <li><strong>Radiology:</strong> Segmental, multifocal cerebral artery vasoconstriction on MRA/CTA, which is typically reversible within 3 months. Imaging may be normal initially.</li>
+                            <li><strong>Treatment:</strong> Calcium channel blockers (e.g., nimodipine) may be effective. Use with caution during pregnancy due to potential effects on placental blood flow, but generally well-tolerated.</li>
+                        </ul>
+                    `
+                },
+                hemorrhagic: {
+                    title: 'Hemorrhagic Stroke (ICH & SAH)',
+                    content: `
+                        <p>Accounts for 5-12% of all maternal deaths. Risk is increased in pregnancy and especially puerperium. Most common cause is preeclampsia/eclampsia.</p>
+                        <h4 class="font-semibold mt-2">Subarachnoid Hemorrhage (SAH)</h4>
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li><strong>Aneurysmal Rupture:</strong> Risk increases with gestation, peaking at 30-34 weeks. Ruptured aneurysms should be treated urgently per standard of care.</li>
+                            <li><strong>Unruptured Aneurysms:</strong> May be monitored. Treatment can be delayed if stable. C-section may be beneficial for those with large (>10mm) or recently treated aneurysms.</li>
+                        </ul>
+                        <h4 class="font-semibold mt-2">Arteriovenous Malformation (AVM)</h4>
+                        <ul class="list-disc list-inside mt-1 space-y-1">
+                            <li>A recent study showed a <strong>3-fold increased risk of bleeding</strong> in pregnant women with AVMs.</li>
+                            <li><strong>Management:</strong> Treatment of ruptured AVMs during pregnancy may be considered due to high re-bleeding risk. Good maternal/fetal outcomes reported with intervention prior to delivery.</li>
+                        </ul>
+                    `
+                },
+                ischemic: {
+                    title: 'Ischemic Stroke',
+                    content: `
+                        <p>Risk increases in pregnancy (esp. 3rd trimester) and early puerperium. Unusual causes are more common.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Risk Factors:</strong> Gestational HTN, diabetes, PPCM, artery dissection (from labor), paradoxical embolism (PFO).</li>
+                            <li><strong>Management:</strong> A neurological emergency. <strong>Do not withhold imaging.</strong></li>
+                            <li><strong>Thrombectomy:</strong> Recommended for LVO; pregnancy is not a contraindication.</li>
+                            <li><strong>Thrombolysis (IV Alteplase):</strong> May be considered if benefits outweigh uterine bleeding risk for moderate-to-severe stroke. rTPA does not cross placenta. Physicians still show hesitancy despite recommendations.</li>
+                        </ul>
+                    `
+                },
+                cvt: {
+                    title: 'Cerebral Venous Thrombosis (CVT)',
+                    content: `
+                        <p>More common in women, with risk further increased by pregnancy, puerperium, and IVF. Higher incidence in early postpartum (3:1 ratio vs pregnancy).</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li><strong>Presentation:</strong> Often insidious severe headache, seizures, focal deficits.</li>
+                            <li><strong>Risk Factors:</strong> C-section, preeclampsia, infection, high maternal age.</li>
+                            <li><strong>Diagnosis:</strong> MRI/MRV is the imaging of choice.</li>
+                            <li><strong>Treatment:</strong> Anticoagulation with LMWH is preferred during pregnancy. Hold 12-24h before delivery. LMWH, UFH, and warfarin are safe for breastfeeding.</li>
+                            <li><strong>Prognosis:</strong> If treated timely, prognosis is comparable to non-pregnant women.</li>
+                        </ul>
+                    `
+                }
+            };
+            
+            document.querySelectorAll('.condition-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const condition = card.dataset.condition;
+                    openModal(conditionDetails[condition].title, conditionDetails[condition].content);
+                });
+            });
+
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tab.dataset.tab) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Timeline tooltip
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineTooltip = document.getElementById('timeline-tooltip');
+            
+            timelineItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    timelineTooltip.innerHTML = item.dataset.info;
+                });
+                item.addEventListener('mouseleave', () => {
+                    timelineTooltip.innerHTML = `<p class="text-sm text-gray-700">Hover over a point on the timeline for details.</p>`;
+                });
+            });
+            
+             // Brain SVG functionality
+            const brainAreas = document.querySelectorAll('.brain-area');
+            const brainTooltip = document.getElementById('brain-tooltip');
+            const brainTooltips = {
+                pres: "<strong>PRES:</strong> Typically affects posterior regions, causing vasogenic edema in parieto-occipital lobes.",
+                rcvs: "<strong>RCVS:</strong> Diffuse, segmental vasoconstriction of cerebral arteries. Not localized to one area.",
+                hemorrhagic: "<strong>Hemorrhagic Stroke:</strong> Can occur anywhere, often related to aneurysm rupture (e.g., in Circle of Willis) or AVMs.",
+                ischemic: "<strong>Ischemic Stroke:</strong> Can affect any vascular territory due to embolism or thrombosis.",
+                cvt: "<strong>CVT:</strong> Involves thrombosis of dural venous sinuses (e.g., superior sagittal, transverse) or cortical veins."
+            };
+
+            brainAreas.forEach(area => {
+                area.addEventListener('mouseenter', () => {
+                    const condition = area.dataset.condition;
+                    brainTooltip.innerHTML = brainTooltips[condition];
+                    document.getElementById(`card-${condition}`).classList.add('ring-2', 'ring-offset-2', 'ring-amber-500');
+                });
+                area.addEventListener('mouseleave', () => {
+                     const condition = area.dataset.condition;
+                    brainTooltip.innerHTML = `<p class="text-sm text-gray-700">Hover over a brain area to see associated conditions.</p>`;
+                    document.getElementById(`card-${condition}`).classList.remove('ring-2', 'ring-offset-2', 'ring-amber-500');
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
