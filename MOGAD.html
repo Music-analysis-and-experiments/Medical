@@ -1,0 +1,640 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Summary: MOGAD Diagnostic Criteria</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #4a90e2;
+            --accent-color: #e94f37;
+            --background-color: #f4f7f9;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --border-color: #dce1e6;
+            --header-font: 'Georgia', 'Times New Roman', serif;
+            --body-font: 'Helvetica Neue', 'Arial', sans-serif;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.6;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+
+        header h1 {
+            font-family: var(--header-font);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 10px auto;
+        }
+
+        nav {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            display: block;
+            color: var(--primary-color);
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-family: var(--header-font);
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            opacity: 0.9;
+        }
+
+        .card {
+            background: #fdfdfd;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .card.accent {
+            border-left-color: var(--secondary-color);
+        }
+
+        .red-flag-card {
+            border-left-color: var(--accent-color);
+            background-color: #fff5f5;
+        }
+        
+        .red-flag-card h3 {
+             color: var(--accent-color);
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Tooltip styles */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--primary-color);
+            text-decoration: none;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            width: max-content;
+            max-width: 300px;
+            text-align: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Comparison Table Styles */
+        .tab-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+        .tab-button.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        .tab-content {
+            display: none;
+            width: 100%;
+            border-top: 3px solid var(--secondary-color);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: -1px; /* Overlap border */
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background-color: #eef3f8;
+            font-weight: bold;
+            width: 20%;
+        }
+        .comparison-table td {
+            background-color: var(--card-bg);
+        }
+        .comparison-table tr:nth-child(even) td {
+            background-color: #f8fafd;
+        }
+        .comparison-table .feature-col {
+            width: 25%;
+        }
+        
+        /* Diagnostic Criteria Layout */
+        .criteria-flow {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .criteria-flow {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .criteria-step {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f8fafd;
+        }
+        .criteria-step .step-number {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        .criteria-step h3 {
+            display: flex;
+            align-items: center;
+        }
+        .criteria-step ul {
+            list-style-type: '✔ ';
+            padding-left: 25px;
+        }
+        
+        .sub-criteria {
+             margin-top: 15px;
+             padding: 10px;
+             border-radius: 5px;
+             border: 1px dashed var(--secondary-color);
+        }
+        .sub-criteria strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Diagnosis of Myelin Oligodendrocyte Glycoprotein Antibody-Associated Disease (MOGAD)</h1>
+        <p>An Interactive Summary of the International MOGAD Panel Proposed Criteria<br>
+        <small>Based on: Banwell B, Bennett JL, Marignier R, et al. Lancet Neurol 2023; 22: 268-82.</small></p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#summary">Overview</a></li>
+            <li><a href="#clinical-features">Clinical Features</a></li>
+            <li><a href="#diagnostic-criteria">Diagnostic Criteria</a></li>
+            <li><a href="#comparison-table">Disease Comparison</a></li>
+            <li><a href="#red-flags">Red Flags</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="summary">
+            <h2>Overview</h2>
+            <p>
+                Myelin Oligodendrocyte Glycoprotein Antibody-Associated Disease 
+                (<span data-tooltip="Myelin Oligodendrocyte Glycoprotein Antibody-Associated Disease">MOGAD</span>) is an inflammatory demyelinating disorder of the central nervous system (<span data-tooltip="Central Nervous System">CNS</span>). It is increasingly recognized as a distinct entity, separate from Multiple Sclerosis (<span data-tooltip="Multiple Sclerosis">MS</span>) and Aquaporin-4 IgG-seropositive Neuromyelitis Optica Spectrum Disorder (<span data-tooltip="Neuromyelitis Optica Spectrum Disorder with antibodies to Aquaporin-4">AQP4-IgG NMOSD</span>). 
+                The core feature of <span data-tooltip="MOGAD">MOGAD</span> is the presence of serum antibodies against the <span data-tooltip="Myelin Oligodendrocyte Glycoprotein">MOG</span> protein.
+            </p>
+            <p>
+                This article, from an international panel of experts, proposes a new set of diagnostic criteria for <span data-tooltip="MOGAD">MOGAD</span> based on an extensive literature review and a structured consensus process. The goal is to standardize the diagnosis, which is essential for defining clinical outcomes, refining inclusion criteria for clinical trials, and predicting the disease course (monophasic vs. relapsing).
+            </p>
+        </section>
+
+        <section id="clinical-features">
+            <h2>Clinical Features at Onset: Adults vs. Children</h2>
+            <p>
+                The clinical presentation of <span data-tooltip="MOGAD">MOGAD</span> differs notably between age groups. Optic neuritis is the most common feature in adults, while <span data-tooltip="Acute Disseminated Encephalomyelitis: a brief but intense attack of inflammation in the brain and spinal cord">ADEM</span> or brain lesions are the typical first manifestation in children, particularly those under 11. The following chart visualizes the frequency of key presenting syndromes in cumulative cohorts of adult and pediatric patients.
+            </p>
+            <div class="chart-container" style="position: relative; height:450px; width:100%;">
+                <canvas id="clinicalFeaturesChart"></canvas>
+            </div>
+             <small>Data adapted from Figure 1B of the article, representing cumulative onset data from UK, French, Sri Lankan, Dutch, and Australian cohorts.</small>
+        </section>
+
+        <section id="diagnostic-criteria">
+            <h2>Proposed Diagnostic Criteria for MOGAD</h2>
+            <p>A diagnosis of <span data-tooltip="MOGAD">MOGAD</span> requires the fulfillment of all three of the following core requirements (A, B, and C). These criteria integrate clinical syndromes with specific antibody testing results and require the exclusion of other conditions.</p>
+            <div class="criteria-flow">
+                <div class="criteria-step">
+                    <h3><span class="step-number">A</span> Core Clinical Event</h3>
+                    <p>The patient must present with one of the following acute <span data-tooltip="CNS">CNS</span> demyelinating syndromes:</p>
+                    <ul>
+                        <li>Optic Neuritis</li>
+                        <li>Myelitis</li>
+                        <li>Acute Disseminated Encephalomyelitis (<span data-tooltip="Acute Disseminated Encephalomyelitis">ADEM</span>)</li>
+                        <li>Cerebral monofocal or polyfocal deficits</li>
+                        <li>Brainstem or cerebellar deficits</li>
+                        <li>Cerebral cortical encephalitis (often with seizures)</li>
+                    </ul>
+                </div>
+
+                <div class="criteria-step">
+                    <h3><span class="step-number">B</span> Positive MOG-IgG Test</h3>
+                    <p>A positive <span data-tooltip="Myelin Oligodendrocyte Glycoprotein">MOG</span>-<span data-tooltip="Immunoglobulin G">IgG</span> test using a cell-based assay is required. The diagnostic path depends on the test result:</p>
+                    
+                    <div class="sub-criteria">
+                        <strong>Serum Test: Clear Positive</strong><br>
+                        A <span data-tooltip="A high-confidence positive result, e.g., a fixed cell-based assay titre ≥1:100.">clear positive</span> result requires no additional supporting features for diagnosis.
+                    </div>
+                    
+                    <div class="sub-criteria">
+                        <strong>Serum Test: Low Positive OR Positive w/o Titre</strong><br>
+                        A <span data-tooltip="A low-confidence positive result, e.g., a fixed cell-based assay titre ≥1:10 and <1:100.">low positive</span> result (or a result reported as "positive" without a specific titre) requires <strong>at least one supporting clinical or MRI feature</strong> AND the patient must be <span data-tooltip="AQP4">AQP4</span>-<span data-tooltip="IgG">IgG</span> seronegative.
+                    </div>
+                    
+                    <div class="sub-criteria">
+                        <strong><span data-tooltip="Cerebrospinal Fluid">CSF</span> Test: Positive (if serum negative)</strong><br>
+                        In rare cases of a negative serum test, a positive <span data-tooltip="CSF">CSF</span> test requires <strong>at least one supporting clinical or MRI feature</strong> AND the patient must be <span data-tooltip="AQP4">AQP4</span>-<span data-tooltip="IgG">IgG</span> seronegative.
+                    </div>
+                </div>
+                
+                <div class="criteria-step">
+                    <h3><span class="step-number">C</span> Exclusion of Other Diagnoses</h3>
+                    <p>The patient's clinical and laboratory findings must not be better explained by another diagnosis. This requires expert clinical judgment.</p>
+                    <ul>
+                        <li>For example, a patient meeting MRI criteria for <span data-tooltip="MS">MS</span> with positive <span data-tooltip="Oligoclonal Bands: proteins that indicate inflammation in the CNS">CSF OCBs</span> and a low-titre <span data-tooltip="MOG">MOG</span>-<span data-tooltip="IgG">IgG</span> result would likely be diagnosed with <span data-tooltip="MS">MS</span>.</li>
+                        <li>Conversely, a patient with bilateral optic neuritis with severe disc swelling and a clearly positive <span data-tooltip="MOG">MOG</span>-<span data-tooltip="IgG">IgG</span> test would be diagnosed with <span data-tooltip="MOGAD">MOGAD</span>, even if some MRI criteria for <span data-tooltip="MS">MS</span> are technically met.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card accent" style="margin-top: 25px;">
+                <h3>Supporting Clinical and MRI Features (Required for low-titre or CSF-only positive results)</h3>
+                <p>If required by step B, one or more of these features must be present:</p>
+                <ul>
+                    <li><strong>Optic Neuritis:</strong> Bilateral involvement, longitudinally extensive lesion (>50% of optic nerve), perineural optic sheath enhancement, or optic disc oedema.</li>
+                    <li><strong>Myelitis:</strong> Longitudinally extensive transverse myelitis (<span data-tooltip="Longitudinally Extensive Transverse Myelitis: spinal cord lesion spanning 3 or more vertebral segments">LETM</span>), central cord lesion (H-sign), or conus lesion.</li>
+                    <li><strong>Brain/Brainstem/Cerebral Syndrome:</strong> Multiple ill-defined T2 lesions (supratentorial/infratentorial), deep grey matter involvement, or specific lesions in the pons, middle cerebellar peduncle, or medulla.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="comparison-table">
+            <h2>MOGAD vs. NMOSD vs. Multiple Sclerosis</h2>
+            <p>This table summarizes the key distinguishing features between <span data-tooltip="MOGAD">MOGAD</span>, <span data-tooltip="AQP4-IgG seropositive NMOSD">AQP4-IgG NMOSD</span>, and Multiple Sclerosis (<span data-tooltip="MS">MS</span>). Use the tabs to explore different categories.</p>
+            
+            <div class="tab-container">
+                <button class="tab-button active" onclick="openTab(event, 'general')">General</button>
+                <button class="tab-button" onclick="openTab(event, 'opticnerve')">Optic Nerve</button>
+                <button class="tab-button" onclick="openTab(event, 'spinalcord')">Spinal Cord</button>
+                <button class="tab-button" onclick="openTab(event, 'brain')">Brain</button>
+                <button class="tab-button" onclick="openTab(event, 'lab')">Laboratory</button>
+            </div>
+
+            <div id="general" class="tab-content active">
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <td class="feature-col"><strong>MOGAD</strong></td>
+                        <td class="feature-col"><strong>AQP4-IgG NMOSD</strong></td>
+                        <td class="feature-col"><strong>Multiple Sclerosis</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Paediatric Onset</th>
+                        <td>Frequent</td>
+                        <td>Extremely rare</td>
+                        <td>Infrequent</td>
+                    </tr>
+                    <tr>
+                        <th>Sex Distribution</th>
+                        <td>Equal (F=M)</td>
+                        <td>Female > Male (F>M)</td>
+                        <td>Female > Male (F>M) after puberty</td>
+                    </tr>
+                    <tr>
+                        <th>Disease Course</th>
+                        <td>Monophasic or relapsing</td>
+                        <td>Most often relapsing</td>
+                        <td>Relapsing, secondary progressive, or progressive from onset (adults)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="opticnerve" class="tab-content">
+                <table class="comparison-table">
+                     <tr>
+                        <th>Feature</th>
+                        <td class="feature-col"><strong>MOGAD</strong></td>
+                        <td class="feature-col"><strong>AQP4-IgG NMOSD</strong></td>
+                        <td class="feature-col"><strong>Multiple Sclerosis</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Initial Visual Acuity</th>
+                        <td>Often severely impaired</td>
+                        <td>Often severely impaired</td>
+                        <td>Mild to moderately impaired</td>
+                    </tr>
+                    <tr>
+                        <th>Initial Recovery</th>
+                        <td>Typically favourable</td>
+                        <td>Risk for poor recovery</td>
+                        <td>Typically favourable</td>
+                    </tr>
+                    <tr>
+                        <th>MRI Lesion Characteristics</th>
+                        <td>Frequently bilateral, anterior, longitudinally extensive, involves optic nerve sheath</td>
+                        <td>Often posterior, frequently longitudinally extensive, chiasmal/optic tract involvement</td>
+                        <td>Typically unilateral, anterior, short lesions, does not involve optic nerve sheath</td>
+                    </tr>
+                    <tr>
+                        <th>Optic Nerve Head</th>
+                        <td>Moderate to severe oedema is typical, can have haemorrhage</td>
+                        <td>Oedema less common than in MOGAD</td>
+                        <td>Mild oedema can occur, severe oedema with haemorrhage is rare</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div id="spinalcord" class="tab-content">
+                <table class="comparison-table">
+                     <tr>
+                        <th>Feature</th>
+                        <td class="feature-col"><strong>MOGAD</strong></td>
+                        <td class="feature-col"><strong>AQP4-IgG NMOSD</strong></td>
+                        <td class="feature-col"><strong>Multiple Sclerosis</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Initial Deficits</th>
+                        <td>Severe</td>
+                        <td>Severe</td>
+                        <td>Mild to moderate</td>
+                    </tr>
+                    <tr>
+                        <th>Motor Function</th>
+                        <td>Excellent motor recovery after treatment</td>
+                        <td>Risk for poor recovery or worsening with relapses</td>
+                        <td>Often good, but risk for impairment during progressive phase</td>
+                    </tr>
+                    <tr>
+                        <th>Spinal Cord MRI</th>
+                        <td>Longitudinally extensive lesions are common; grey matter H-sign and conus lesions are characteristic</td>
+                        <td>Single longitudinally extensive lesion, often involves entire cord diameter; conus rarely involved</td>
+                        <td>Often multiple focal lesions, posterior, partial cross-section; conus rarely involved</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="brain" class="tab-content">
+                <table class="comparison-table">
+                     <tr>
+                        <th>Feature</th>
+                        <td class="feature-col"><strong>MOGAD</strong></td>
+                        <td class="feature-col"><strong>AQP4-IgG NMOSD</strong></td>
+                        <td class="feature-col"><strong>Multiple Sclerosis</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Clinical Presentation</th>
+                        <td>Encephalopathy, seizures, <span data-tooltip="ADEM">ADEM</span>, focal deficits common</td>
+                        <td>Area postrema symptoms (nausea/vomiting), hiccups common</td>
+                        <td>Focal neurological deficits common; encephalopathy rare</td>
+                    </tr>
+                    <tr>
+                        <th>Qualitative MRI Lesion Features</th>
+                        <td>Fluffy, poorly demarcated T2 lesions; large, often with deep grey matter involvement</td>
+                        <td>Lesions common in AQP4-rich regions (e.g. around ventricles, corticospinal tract)</td>
+                        <td>Ovoid, round, well-demarcated T2 lesions (e.g. Dawson's fingers)</td>
+                    </tr>
+                     <tr>
+                        <th>MRI Contrast Enhancement</th>
+                        <td>Non-specific leptomeningeal; cortical (linear) enhancement</td>
+                        <td>Patchy, cloud-like; pencil-thin ependymal enhancement</td>
+                        <td>Ovoid, ring, or open-ring enhancement</td>
+                    </tr>
+                </table>
+            </div>
+
+             <div id="lab" class="tab-content">
+                <table class="comparison-table">
+                     <tr>
+                        <th>Feature</th>
+                        <td class="feature-col"><strong>MOGAD</strong></td>
+                        <td class="feature-col"><strong>AQP4-IgG NMOSD</strong></td>
+                        <td class="feature-col"><strong>Multiple Sclerosis</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Silent MRI Lesion Accrual</th>
+                        <td>Infrequent</td>
+                        <td>Infrequent</td>
+                        <td>Frequent</td>
+                    </tr>
+                    <tr>
+                        <th>Residual T1-hypointense lesions</th>
+                        <td>Extremely rare</td>
+                        <td>Might be present</td>
+                        <td>Frequent</td>
+                    </tr>
+                    <tr>
+                        <th><span data-tooltip="Cerebrospinal Fluid">CSF</span> Oligoclonal Bands</th>
+                        <td>Infrequent (up to 20%, can be transient)</td>
+                        <td>Infrequent</td>
+                        <td>Extremely frequent (>80%)</td>
+                    </tr>
+                </table>
+            </div>
+            <small>Features are summarized from Table 1 of the article.</small>
+        </section>
+
+        <section id="red-flags">
+            <h2>Red Flags Against a Diagnosis of MOGAD</h2>
+            <p>
+                The presence of certain clinical or radiological features should prompt reconsideration of a <span data-tooltip="MOGAD">MOGAD</span> diagnosis, as they are more typical of other conditions like <span data-tooltip="MS">MS</span>.
+            </p>
+            <div class="card red-flag-card">
+                <h3>Key Red Flags</h3>
+                 <ul>
+                    <li><strong>Progressive Course:</strong> A progressive neurological decline in the absence of distinct clinical attacks.</li>
+                    <li><strong>Typical MS-like MRI:</strong> MRI findings of well-circumscribed T2 lesions in a pattern classic for <span data-tooltip="MS">MS</span> (e.g., meeting dissemination in space criteria), especially if accompanied by positive <span data-tooltip="CSF OCBs">CSF OCBs</span>.</li>
+                    <li><strong>Lack of Steroid Response:</strong> No improvement in clinical deficits following treatment with high-dose corticosteroids for an acute attack.</li>
+                    <li><strong>Silent Lesion Accumulation:</strong> The accrual of new, clinically silent T2-hyperintense focal lesions over time on follow-up MRI scans.</li>
+                    <li><strong>Persistent Enhancement:</strong> Lesion contrast enhancement that persists for 6 months or more.</li>
+                    <li><strong>Rapid Onset:</strong> Rapid worsening of clinical deficits from onset to nadir within minutes to hours (suggests vascular cause).</li>
+                 </ul>
+            </div>
+             <small>Adapted from Panel 3 of the article.</small>
+        </section>
+    </div>
+
+    <script>
+        // Chart.js script for Clinical Features
+        const ctx = document.getElementById('clinicalFeaturesChart').getContext('2d');
+        const clinicalFeaturesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Optic Neuritis', 'Transverse Myelitis', 'ADEM or Brain Lesions', 'Optic Neuritis & Transverse Myelitis'],
+                datasets: [{
+                    label: 'Children (N=176)',
+                    data: [35, 10, 45, 5],
+                    backgroundColor: 'rgba(74, 144, 226, 0.7)',
+                    borderColor: 'rgba(74, 144, 226, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Adults (N=377)',
+                    data: [55, 25, 10, 7],
+                    backgroundColor: 'rgba(0, 51, 102, 0.7)',
+                    borderColor: 'rgba(0, 51, 102, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Proportion of Patients (%) at Onset'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Frequency of Presenting Syndromes in MOGAD',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Tab functionality for comparison table
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            const section = document.getElementById('comparison-table');
+            tabcontent = section.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = section.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+</body>
+</html>
