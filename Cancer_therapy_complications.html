@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurologic Complications of Cancer Therapy</title>
+    <style>
+        :root {
+            --primary-color: #005A9C;
+            --secondary-color: #f0f8ff;
+            --accent-color: #E87722;
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --border-color: #dee2e6;
+            --header-footer-bg: #f8f9fa;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        header {
+            background-color: var(--header-footer-bg);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 2.5em;
+        }
+        header p {
+            margin: 5px 0 0;
+            font-style: italic;
+            color: #6c757d;
+        }
+        main {
+            display: flex;
+        }
+        nav {
+            width: 20%;
+            min-width: 220px;
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li .nav-button {
+            display: block;
+            padding: 12px 15px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-weight: 500;
+            background-color: transparent;
+            width: 100%;
+            text-align: left;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        nav ul li .nav-button.active, nav ul li .nav-button:hover {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+        }
+        nav .sub-nav {
+            padding-left: 20px;
+            display: none;
+        }
+        nav .sub-nav .nav-button {
+            font-size: 0.9em;
+            padding: 10px 15px;
+        }
+        .content {
+            width: 80%;
+            padding-left: 20px;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h3 {
+            color: var(--primary-color);
+            margin-top: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        .key-points, .info-box {
+            background-color: var(--secondary-color);
+            border-left: 5px solid var(--accent-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .key-points ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .ctcae-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .ctcae-card {
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-top: 4px solid;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .grade-1 { border-color: #28a745; }
+        .grade-2 { border-color: #ffc107; }
+        .grade-3 { border-color: #fd7e14; }
+        .grade-4 { border-color: #dc3545; }
+        .grade-5 { border-color: #343a40; }
+        .ctcae-card h4 {
+            margin: 0 0 10px 0;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background-color: var(--header-footer-bg);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .citation {
+            font-size: 0.8em;
+            color: #005a9c;
+            vertical-align: super;
+        }
+
+        /* Styles for Temporal Map */
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .timeline-header h2 {
+            font-size: 2em;
+        }
+        .timeline-header p {
+            font-size: 1.1em;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        .timeline-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            gap: 1.5rem;
+            font-size: 0.9em;
+        }
+        .timeline-legend-item {
+            display: flex;
+            align-items: center;
+        }
+        .legend-dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .chemo-dot { background-color: #be185d; }
+        .radio-dot { background-color: #0e7490; }
+
+        .timeline-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+        .timeline-axis {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+        .timeline-phase {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+        .time-marker {
+            position: relative;
+            margin-left: 50%;
+            padding-left: 2rem;
+            font-size: 1.25em;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .time-label {
+            margin-left: 50%;
+            padding-left: 2rem;
+            margin-top: -0.25rem;
+            margin-bottom: 1.5rem;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        .time-marker::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            border: 2px solid var(--bg-color);
+            z-index: 10;
+        }
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .chemo-column {
+            text-align: right;
+            padding-right: 2rem;
+        }
+        .radio-column {
+            text-align: left;
+            padding-left: 2rem;
+        }
+        .event-marker {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--header-footer-bg);
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+        .event-marker:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .event-marker.chemo {
+            border-left: 4px solid #be185d;
+        }
+        .event-marker.radio {
+            border-left: 4px solid #0e7490;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.6);
+            display: none; /* Changed from opacity for better compatibility */
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+        }
+        .modal-overlay.visible {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--bg-color);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        #close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        .modal-body ul {
+            list-style: disc;
+            list-style-position: inside;
+            padding-left: 0;
+        }
+        .modal-body ul li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Neurologic Complications of Cancer Therapy</h1>
+        <p>An Interactive Summary of the Review by Jennie W. Taylor, MD, MPH</p>
+    </header>
+
+    <div class="container">
+        <main>
+            <nav id="navigation">
+                <ul>
+                    <li><button class="nav-button active" data-target="overview">Overview</button></li>
+                    <li>
+                        <button class="nav-button" data-target="chemotherapy">Chemotherapy Complications</button>
+                        <ul class="sub-nav">
+                            <li><button class="nav-button" data-target="chemo-acute-central">Acute Central Toxicities</button></li>
+                            <li><button class="nav-button" data-target="chemo-leuko">Leukoencephalopathy</button></li>
+                            <li><button class="nav-button" data-target="chemo-cipn">Peripheral Neuropathy (CIPN)</button></li>
+                            <li><button class="nav-button" data-target="chemo-cerebrovascular">Cerebrovascular Issues</button></li>
+                            <li><button class="nav-button" data-target="chemo-cognitive">Cognitive Impairment</button></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button class="nav-button" data-target="radiation">Radiation Therapy Complications</button>
+                        <ul class="sub-nav">
+                            <li><button class="nav-button" data-target="rad-phases">Temporal Phases</button></li>
+                            <li><button class="nav-button" data-target="rad-smart">SMART Syndrome</button></li>
+                            <li><button class="nav-button" data-target="rad-neuropathies">Neuropathies, Plexopathies, & Myelopathy</button></li>
+                             <li><button class="nav-button" data-target="rad-cognitive">Long-Term Cognitive Effects</button></li>
+                        </ul>
+                    </li>
+                    <li><button class="nav-button" data-target="timeline">Temporal Map</button></li>
+                </ul>
+            </nav>
+
+            <div class="content">
+                <!-- Overview Section -->
+                <section id="overview" class="content-section active">
+                    <h2>Overview</h2>
+                    <p>Neurologic complications are common and serious outcomes of cancer treatments. This summary discusses the most frequent peripheral and central neurologic complications from chemotherapy, radiation, and antiangiogenic therapies, covering their signs, symptoms, mechanisms, and management. With cancer treatments evolving and patient survival lengthening, early recognition and management of these complications are crucial for improving patient outcomes.</p>
+                    
+                    <div class="key-points">
+                        <h4>Essential Points</h4>
+                        <ul>
+                            <li>Neurologists must be familiar with both acute toxicities during cancer treatment and delayed toxicities that can appear years later.</li>
+                            <li>Understanding the clinical and radiologic signs of these complications is key to proper management.</li>
+                            <li>The landscape of cancer therapy is expanding beyond traditional methods to include targeted, biologic, and immunotherapies, increasing the complexity of neurologic management.</li>
+                        </ul>
+                    </div>
+
+                    <h3>Common Terminology Criteria for Adverse Events (CTCAE)</h3>
+                    <p>The National Cancer Institute's CTCAE is a standardized 5-point scale for grading adverse events in cancer patients. It provides a common language for clinicians to guide treatment decisions and manage toxicity. Neurologists should be familiar with this system when coordinating care.</p>
+                    <div class="ctcae-grid">
+                        <div class="ctcae-card grade-1"><h4>Grade 1: Mild</h4><p>Asymptomatic or mild symptoms; clinical or diagnostic observations only; no intervention needed.</p></div>
+                        <div class="ctcae-card grade-2"><h4>Grade 2: Moderate</h4><p>Minimal, local, or noninvasive intervention indicated; limiting instrumental activities of daily living (ADL).</p></div>
+                        <div class="ctcae-card grade-3"><h4>Grade 3: Severe</h4><p>Medically significant but not immediately life-threatening; hospitalization may be needed; disabling; limiting self-care ADL.</p></div>
+                        <div class="ctcae-card grade-4"><h4>Grade 4: Life-Threatening</h4><p>Life-threatening consequences; urgent intervention required.</p></div>
+                        <div class="ctcae-card grade-5"><h4>Grade 5: Death</h4><p>Death related to the adverse event.</p></div>
+                    </div>
+                </section>
+
+                <!-- Chemotherapy Section -->
+                <section id="chemotherapy" class="content-section">
+                    <h2>Neurologic Complications of Chemotherapy</h2>
+                    <p>Conventional chemotherapeutic agents are well-known for causing both central and peripheral nervous system toxicities. These complications are a frequent reason for neurologic consultation.</p>
+                </section>
+                
+                <section id="chemo-acute-central" class="content-section">
+                    <h2>Acute Central Toxicities (Chemotherapy)</h2>
+                    <p>Several cancer therapies can lead to acute central neurologic toxicities, typically manifesting as acute encephalopathy. Cerebellar ataxia and aseptic meningitis are also seen with certain agents. These toxicities often appear within hours to days of exposure.</p>
+                    <p><b>Risk Factors:</b> High doses of cytotoxic agents, intrathecal (vs. IV) delivery, prior radiation exposure, and patient comorbidities like renal or hepatic impairment increase the risk.</p>
+                    <p><b>Manifestations:</b></p>
+                    <ul>
+                        <li><b>Acute Encephalopathy:</b> Presents with confusion, seizures, and altered mental status. MRI is often unremarkable, and symptoms tend to be self-limiting.</li>
+                        <li><b>Acute Cerebellar Disorder:</b> Associated with high-dose cytarabine in up to 25% of patients, with ataxia appearing within 5 days of treatment. Immediate discontinuation of the drug is required.</li>
+                        <li><b>Aseptic Meningitis:</b> Can develop after intrathecal methotrexate and cytarabine. Symptoms include headache, nuchal rigidity, and fever, usually resolving within 3 days.</li>
+                    </ul>
+                    <table>
+                        <caption>Table 1: Common Acute Central Nervous System Chemotherapy Toxicities</caption>
+                        <thead><tr><th>Toxicity Type</th><th>Associated Agents</th></tr></thead>
+                        <tbody>
+                            <tr><td><b>Acute encephalopathy</b></td><td>5-Fluorouracil, Antiangiogenics, Carmustine (BCNU), Cisplatin, Cyclophosphamide, Cytosine arabinoside, Doxorubicin, Etoposide, Fludarabine, Ifosfamide, Interferons, Interleukin 1 and 2, Methotrexate, Procarbazine, Tamoxifen, Thalidomide, Thiotepa, Vincristine</td></tr>
+                            <tr><td><b>Cerebellar toxicity</b></td><td>High-dose cytarabine</td></tr>
+                            <tr><td><b>Aseptic meningitis</b></td><td>Intrathecal methotrexate, Intrathecal cytarabine</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="chemo-leuko" class="content-section">
+                    <h2>Leukoencephalopathy</h2>
+                    <p>Leukoencephalopathy is a severe, delayed complication from cytotoxic agents like methotrexate. It is characterized by extensive white matter hyperintensity on T2-weighted MRI and often brain atrophy. While some patients are asymptomatic, most experience progressive cognitive decline or dementia months to years after exposure.</p>
+                    <p>The risk is dose-dependent and significantly higher when methotrexate is combined with radiation therapy. The decision to continue treatment is complex and must balance the symptomatic burden against the response to therapy.</p>
+                </section>
+
+                <section id="chemo-cipn" class="content-section">
+                    <h2>Chemotherapy-Induced Peripheral Neuropathy (CIPN)</h2>
+                    <p>CIPN is one of the most common toxicities of cancer therapy. It can limit effective treatment delivery and significantly impact long-term quality of life, especially for breast and colon cancer survivors. The highest rates occur with platinum-based drugs (cisplatin, oxaliplatin), taxanes (paclitaxel), vinca alkaloids, and proteasome inhibitors (bortezomib).</p>
+                    <h3>Characteristics & Management</h3>
+                    <p>The development of CIPN is mostly dose-dependent. The majority of cases occur within the first 2 months of treatment, progress during active therapy, and may gradually improve after discontinuation. However, patients on platinum therapies may experience "coasting," where symptoms worsen for months after treatment stops.</p>
+                     <div class="info-box">
+                        <strong>Management Principles:</strong> Early recognition is key. If symptoms are mild, treatment may continue. If they worsen and impact function, clinicians should discuss dose reduction, delay, or discontinuation. For painful CIPN, duloxetine is the only agent with strong evidence supporting its use.
+                    </div>
+                    <table>
+                        <caption>Table 2: Characteristics of Chemotherapy-induced Peripheral Neuropathy</caption>
+                        <thead><tr><th>Pattern</th><th>Symptoms</th><th>Examination Findings</th><th>Chemotherapies</th><th>Electrodiagnostic Findings</th></tr></thead>
+                        <tbody>
+                            <tr><td><b>Large fiber sensory-predominant</b></td><td>Pain, paresthesia, allodynia, hyperalgesia, imbalance, numbness</td><td>Stocking-and-glove pattern, impaired light touch, vibration, proprioception</td><td>Platinum derivatives, taxanes, thalidomide</td><td>Low amplitude sensory nerve action potentials</td></tr>
+                            <tr><td><b>Small fiber neuropathy</b></td><td>Painful, burning sensation</td><td>Stocking-and-glove pattern, impaired pin-prick and temperature sensation</td><td>Vinca alkaloids, taxanes, thalidomide, bortezomib</td><td>May be normal; skin biopsy can confirm fiber degeneration</td></tr>
+                            <tr><td><b>Motor neuropathy</b></td><td>Weakness, tremor, cramps</td><td>Decreased reflexes, distal weakness, atrophy</td><td>Paclitaxel, thalidomide</td><td>Low amplitude compound muscle action potentials</td></tr>
+                             <tr><td><b>Autonomic neuropathy</b></td><td>Constipation, orthostasis, bladder dysfunction</td><td>Postural hypotension, reduced heart rate variability</td><td>Vincristine, bortezomib</td><td>(Varies)</td></tr>
+                        </tbody>
+                    </table>
+                    <h3>Symptomatic Treatment Approaches</h3>
+                     <table>
+                        <caption>Table 3: Approaches to Treating Pain Associated With CIPN</caption>
+                        <thead><tr><th>Intervention</th><th>Evidence Level</th><th>Notes</th></tr></thead>
+                        <tbody>
+                            <tr><td colspan="3"><b>Pharmacologic</b></td></tr>
+                            <tr><td>Duloxetine</td><td>I, B</td><td>Recommended for painful CIPN, with more pronounced benefit in platinum-based therapies.</td></tr>
+                            <tr><td>Venlafaxine</td><td>II, C</td><td>Consider if duloxetine fails or is contraindicated.</td></tr>
+                            <tr><td>Tricyclic Antidepressants (Amitriptyline, Nortriptyline)</td><td>II, C/D</td><td>Evidence is inconclusive; may be considered if other options fail.</td></tr>
+                            <tr><td>Gabapentin/Pregabalin</td><td>II, C/D</td><td>Not recommended by ASCO guidelines due to lack of benefit shown in trials.</td></tr>
+                            <tr><td colspan="3"><b>Nonpharmacologic</b></td></tr>
+                            <tr><td>Exercise and functional training</td><td>II, B</td><td>Early intervention is key and recommended at symptom onset.</td></tr>
+                            <tr><td>Acupuncture</td><td>II, C</td><td>May be beneficial for select patients.</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="chemo-cerebrovascular" class="content-section">
+                    <h2>Cerebrovascular Complications</h2>
+                    <p>Antiangiogenic therapies like bevacizumab are widely used but carry risks of cerebrovascular complications. While concerns exist about increased CNS hemorrhage, large analyses have not shown higher risks in patients with nonhemorrhagic lesions. The risk may be higher for patients on anticoagulation therapy.</p>
+                    <p>Other complications include cerebrovascular ischemia and <b>Posterior Reversible Encephalopathy Syndrome (PRES)</b>, which manifests with headaches, visual changes, and seizures, often associated with hypertension.</p>
+                </section>
+
+                <section id="chemo-cognitive" class="content-section">
+                    <h2>Cancer-Related Cognitive Impairment</h2>
+                    <p>A significant concern for cancer survivors is the development of cognitive deficits ("chemo brain") that linger after treatment. This can impact quality of life and the ability to work.</p>
+                    <ul>
+                        <li><b>Mechanisms:</b> The causes are complex, involving inflammatory changes, direct toxicity to neural cells, and disruption of brain networks.</li>
+                        <li><b>Symptoms:</b> Neuropsychological testing often reveals memory impairment, slower processing speed, and executive dysfunction.</li>
+                        <li><b>Risk Factors:</b> Include lower cognitive reserve, anxiety, depression, fatigue, and the specific treatments used.</li>
+                        <li><b>Management:</b> Supportive treatments like optimizing sleep, regular exercise, and a healthy diet are beneficial. Pharmacologic options like modafinil or methylphenidate have shown some promise but lack large trial data.</li>
+                    </ul>
+                </section>
+                
+                <!-- Radiation Therapy Section -->
+                <section id="radiation" class="content-section">
+                    <h2>Neurologic Complications of Radiation Therapy</h2>
+                    <p>Radiation therapy is a cornerstone of cancer treatment involving the brain and spinal cord. Its ionizing effects cause DNA damage and cell death. Factors increasing the risk of toxicity include larger treated brain volumes and higher total radiation doses delivered in fewer fractions.</p>
+                </section>
+                
+                <section id="rad-phases" class="content-section">
+                    <h2>Temporal Phases of Radiation Neurotoxicity</h2>
+                    <p>Neurologic complications of radiation therapy are often categorized into three temporal phases.</p>
+                    <h3>1. Acute Phase (During or up to 2 months after RT)</h3>
+                    <p>Fatigue is the most common symptom. Headaches are also common, and progressive headaches may require glucocorticoids to reduce cerebral edema. Acute encephalopathy can occur but is rare with modern fractionation schedules (doses < 3 Gy).</p>
+                    <h3>2. Early-Delayed Phase (Up to 6 months after RT)</h3>
+                    <p>In this phase, patients may experience persistent fatigue and focal neurologic symptoms. It is also the window for <b>pseudoprogression</b>, a radiologic diagnosis characterized by increased contrast enhancement and FLAIR hyperintensity within the radiation field. It can be difficult to distinguish from true tumor progression but is often confirmed retrospectively. Bevacizumab is an effective treatment for symptomatic pseudoprogression.</p>
+                    <h3>3. Delayed Phase (More than 6 months after RT)</h3>
+                    <p>Late effects are slower to develop and are generally not reversible. A major complication is <b>radiation necrosis</b>, a difficult long-term issue caused by vascular injury. Like pseudoprogression, it can be hard to distinguish from tumor recurrence on imaging. Bevacizumab is an approved and effective treatment for radiation necrosis.</p>
+                </section>
+                
+                <section id="rad-smart" class="content-section">
+                    <h2>Strokelike Migraine Attacks After Radiation Therapy (SMART) Syndrome</h2>
+                    <p>SMART syndrome is an important long-term complication that occurs years to decades after radiation exposure. Its mechanism is not fully understood but is thought to involve both vascular changes and neuronal hyperexcitability.</p>
+                    <ul>
+                        <li><b>Clinical Symptoms:</b> Subacute onset of headaches, seizures, and focal neurologic symptoms.</li>
+                        <li><b>Imaging:</b> Confirms restricted diffusion, T1 postcontrast enhancement, and abnormal FLAIR signal.</li>
+                        <li><b>Management:</b> The condition can be difficult to distinguish from tumor recurrence. Treatment is not standardized, but antiseizure medications are often used if seizures are present.</li>
+                    </ul>
+                </section>
+                
+                <section id="rad-neuropathies" class="content-section">
+                    <h2>Radiation-Induced Neuropathies, Plexopathies, and Myelopathy</h2>
+                    <p>The same principles of radiation-induced injury in the brain apply to cranial nerves, peripheral nerves, and the spinal cord.</p>
+                    <ul>
+                        <li><b>Optic Neuropathy:</b> A potentially disabling complication causing painless, progressive vision loss, often occurring 6 to 24 months after therapy. There are no known effective treatments.</li>
+                        <li><b>Ototoxicity:</b> Complications like tinnitus and hearing loss are not uncommon, occurring months to years after therapy, with risk increasing with dose and concurrent chemotherapy.</li>
+                        <li><b>Plexopathies:</b> Brachial plexopathies are more common after radiation for lung or breast cancer. Onset is typically around 1 year post-treatment. EMG findings of fasciculation potentials and myokymic discharges favor a radiation-induced cause over a neoplastic one.</li>
+                        <li><b>Myelopathy:</b> A complication involving the spinal cord. Early on (within 6 months), patients may develop a Lhermitte sign, which often resolves. Late radiation-induced myelopathy is a progressive condition without proven treatments, though management is similar to intracranial radiation necrosis (e.g., glucocorticoids, bevacizumab).</li>
+                    </ul>
+                </section>
+
+                <section id="rad-cognitive" class="content-section">
+                    <h2>Long-Term Cognitive Effects of Cranial Irradiation</h2>
+                     <p>The long-term cognitive effects of cranial irradiation, especially from whole-brain radiation therapy (WBRT), can significantly impact survivorship. This has led to efforts to minimize radiation exposure, particularly in younger patients.</p>
+                     <p>Strategies to mitigate cognitive decline include:</p>
+                     <ul>
+                         <li>Using stereotactic radiosurgery (SRS) instead of WBRT for treating a limited number of brain metastases.</li>
+                         <li>Employing hippocampal-sparing techniques during WBRT.</li>
+                         <li>Concurrent use of memantine for patients who must undergo WBRT.</li>
+                     </ul>
+                     <p>Childhood radiation exposure is a known risk factor for long-term cerebrovascular injury, including arteriopathy and ischemic stroke, which can occur years to decades later.</p>
+                </section>
+
+                <!-- NEW: Temporal Map Section -->
+                <section id="timeline" class="content-section">
+                    <div class="timeline-header">
+                        <h2>Temporal Map of Neurotoxicity</h2>
+                        <p>An Interactive Timeline of Neurologic Complications in Cancer Therapy</p>
+                         <div class="timeline-legend">
+                            <div class="timeline-legend-item"><span class="legend-dot chemo-dot"></span>Chemotherapy</div>
+                            <div class="timeline-legend-item"><span class="legend-dot radio-dot"></span>Radiation Therapy</div>
+                        </div>
+                    </div>
+            
+                    <div class="timeline-container">
+                        <div class="timeline-axis"></div>
+                        <div id="timeline-content" class="space-y-16">
+                            <!-- Timeline events will be injected here by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+                <!-- END: Temporal Map Section -->
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Timeline -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="modal-content" class="modal-content">
+            <!-- Modal details will be injected here -->
+        </div>
+    </div>
+
+    <footer>
+        <p>This interactive summary is based on the article "Neurologic Complications of Conventional Chemotherapy and Radiation Therapy" by Jennie W. Taylor, MD, MPH, published in Continuum (Minneap Minn) 2023;29(6):1809-1826. Information has been supplemented with current clinical guidelines and research. All content is for informational purposes only. Consult with a qualified medical professional for diagnosis and treatment.</p>
+    </footer>
+
+    <script>
+        // Original Script for Tab Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mainNavButtons = document.querySelectorAll('nav > ul > li > .nav-button');
+
+            function toggleSubNav(targetId) {
+                const parentLi = document.querySelector(`.nav-button[data-target='${targetId}']`).parentElement;
+                const subNav = parentLi.querySelector('.sub-nav');
+                // Hide all sub-navs first
+                document.querySelectorAll('.sub-nav').forEach(sn => {
+                    sn.style.display = 'none';
+                });
+                // Then show the relevant one
+                if (subNav) {
+                    subNav.style.display = 'block';
+                }
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+
+                    document.getElementById(targetId).classList.add('active');
+                    button.classList.add('active');
+
+                    const isSubNavButton = button.parentElement.parentElement.classList.contains('sub-nav');
+                    if (isSubNavButton) {
+                        const mainButton = button.parentElement.parentElement.previousElementSibling;
+                        mainButton.classList.add('active');
+                        toggleSubNav(mainButton.dataset.target);
+                        document.getElementById(mainButton.dataset.target).classList.add('active');
+                    } else {
+                        toggleSubNav(targetId);
+                    }
+                });
+            });
+
+            document.getElementById('overview').classList.add('active');
+            document.querySelector('.nav-button[data-target="overview"]').classList.add('active');
+        });
+
+        // NEW Script for Timeline and Modal
+        const timelineData = [
+            {
+                timeframe: "Acute Phase",
+                label: "During or Within Days of Treatment",
+                events: [
+                    {
+                        id: 'acute_central_chemo', type: 'chemo', title: "Acute Central Toxicities",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Occurs within hours to days of exposure.</p><p class="mb-4"><strong>Symptoms:</strong> A constellation of confusion, seizures, altered mental status (encephalopathy), ataxia (cerebellar toxicity), or headache and nuchal rigidity (aseptic meningitis).</p><h4>Key Agents:</h4><ul><li><strong>Encephalopathy:</strong> 5-FU, Ifosfamide, Methotrexate, Cisplatin, etc.</li><li><strong>Cerebellar Toxicity:</strong> High-dose Cytarabine.</li><li><strong>Aseptic Meningitis:</strong> Intrathecal Methotrexate & Cytarabine.</li></ul>`
+                    },
+                    {
+                        id: 'acute_neuro_radio', type: 'radio', title: "Acute Neurotoxicity",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Occurs during the first 1-2 months after starting radiation.</p><p class="mb-4"><strong>Symptoms:</strong> Fatigue is the most common symptom. Others include headaches, nausea, and rarely, acute encephalopathy (especially with high daily doses >3 Gy).</p><h4>Key Factors:</h4><ul><li>Volume of brain treated.</li><li>Total dose and fractionation schedule.</li><li>Symptoms often managed with glucocorticoids to reduce cerebral edema.</li></ul>`
+                    },
+                     {
+                        id: 'acute_cipn', type: 'chemo', title: "Acute Painful Neuropathy",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Can occur within hours to days of the first few doses.</p><p class="mb-4"><strong>Symptoms:</strong> Cold sensitivity, throat discomfort, muscle cramps, and perioral numbness. A distinct acute painful neuropathy is also associated with some agents.</p><h4>Key Agents:</h4><ul><li><strong>Oxaliplatin:</strong> Known for inducing acute cold-sensitive neurotoxicity.</li><li><strong>Paclitaxel:</strong> Associated with an acute painful neuropathy.</li></ul>`
+                    }
+                ]
+            },
+            {
+                timeframe: "Early-Delayed Phase",
+                label: "Up to 6 Months Post-Treatment",
+                events: [
+                    {
+                        id: 'cipn', type: 'chemo', title: "Chemotherapy-Induced Peripheral Neuropathy (CIPN)",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Typically develops and progresses during active therapy, often within the first 2 months. It is the most common toxicity.</p><p class="mb-4"><strong>Symptoms:</strong> A painful sensory axonal neuropathy in a 'stocking-and-glove' distribution. Can also include motor and autonomic symptoms. It is mostly dose-dependent.</p><h4>Management:</h4><ul><li>Dose reduction or delay of chemotherapy.</li><li>Symptomatic treatment with duloxetine is the primary recommendation.</li><li>Physical therapy and exercise are crucial.</li></ul>`
+                    },
+                    {
+                        id: 'pseudoprogression', type: 'radio', title: "Pseudoprogression",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> A radiologic diagnosis seen in the early-delayed window, up to 6 months post-RT.</p><p class="mb-4"><strong>Characteristics:</strong> Increased enhancement and FLAIR hyperintensity on MRI within the radiation field, mimicking tumor progression but representing treatment effect (inflammation/edema). Can occur in up to 30% of high-grade glioma patients treated with chemoradiation.</p><h4>Management:</h4><ul><li>Often confirmed retrospectively by clinical stability or improvement.</li><li>Can be managed with bevacizumab if symptomatic.</li></ul>`
+                    },
+                    {
+                        id: 'early_myelopathy', type: 'radio', title: "Early Radiation Myelopathy",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Often within 6 months of spinal irradiation.</p><p class="mb-4"><strong>Symptoms:</strong> Typically presents as a transient Lhermitte sign (electric shock sensation on neck flexion). Other demyelinating diseases must be excluded.</p><h4>Prognosis:</h4><p>Treatment is supportive, and symptoms often resolve spontaneously.</p>`
+                    }
+                ]
+            },
+            {
+                timeframe: "Late / Delayed Phase",
+                label: "Months to Years Post-Treatment",
+                events: [
+                    {
+                        id: 'leuko_chemo', type: 'chemo', title: "Leukoencephalopathy",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> A severe, delayed complication occurring months to years after exposure.</p><p class="mb-4"><strong>Characteristics:</strong> Supported by extensive white matter hyperintensity on T2 MRI. Leads to progressive cognitive decline or dementia. Risk is dose-dependent and significantly elevated when combined with radiation.</p><h4>Key Agent:</h4><ul><li><strong>Methotrexate</strong> (IV or intrathecal) is the classic causative agent.</li></ul>`
+                    },
+                    {
+                        id: 'rad_necrosis', type: 'radio', title: "Radiation Necrosis",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> A difficult long-term complication, typically occurring at least 1 year after treatment but can be up to a decade later.</p><p class="mb-4"><strong>Characteristics:</strong> Caused by vascular injury leading to parenchymal necrosis. Appears as a contrast-enhancing, centrally necrotic mass with significant edema, making it hard to distinguish from tumor recurrence.</p><h4>Management:</h4><ul><li>Bevacizumab is an approved and effective treatment.</li><li>Glucocorticoids or even surgical resection may be needed for severe symptoms.</li></ul>`
+                    },
+                    {
+                        id: 'cognitive_chemo', type: 'chemo', title: "Cancer-Related Cognitive Impairment",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Cognitive deficits ('chemo brain') that linger long after the course of treatment is complete.</p><p class="mb-4"><strong>Symptoms:</strong> Impairments in memory, processing speed, executive dysfunction, and attention. A significant issue for cancer survivors' quality of life.</p><h4>Management:</h4><p>Supportive care, cognitive rehabilitation, and optimizing sleep and exercise are beneficial.</p>`
+                    },
+                    {
+                        id: 'smart', type: 'radio', title: "SMART Syndrome",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> A rare phenomenon occurring years to decades after radiation exposure.</p><p class="mb-4"><strong>Stands For:</strong> Strokelike Migraine Attacks after Radiation Therapy.</p><p class="mb-4"><strong>Symptoms:</strong> Subacute onset of headaches, seizures, and focal neurologic symptoms. Imaging shows restricted diffusion and enhancement, which can be difficult to distinguish from tumor recurrence.</p>`
+                    },
+                    {
+                        id: 'plexopathy_radio', type: 'radio', title: "Radiation-Induced Plexopathies",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Onset is generally around 1 year after radiation.</p><p class="mb-4"><strong>Characteristics:</strong> Damage to the brachial (arm) or lumbosacral (leg) plexus. Symptoms include paresthesias and weakness. Myokymic discharges on EMG are a key diagnostic feature distinguishing it from neoplastic plexopathy.</p>`
+                    },
+                    {
+                        id: 'late_myelopathy_radio', type: 'radio', title: "Late Radiation Myelopathy",
+                        details: `<p class="mb-2"><strong>Manifestation:</strong> Insidious onset more than 6 months after treatment.</p><p class="mb-4"><strong>Characteristics:</strong> A progressive, irreversible myelopathy with weakness and sensory loss, often painless. Caused by demyelination and vascular changes. MRI shows intramedullary T2 hyperintensity.</p><h4>Management:</h4><p>No proven treatments, but similar approaches to intracranial necrosis (glucocorticoids, bevacizumab) are used.</p>`
+                    }
+                ]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineContent = document.getElementById('timeline-content');
+            if (!timelineContent) return; // Don't run this script if the timeline isn't on the page
+
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalContent = document.getElementById('modal-content');
+
+            // Render timeline
+            timelineData.forEach(phase => {
+                const phaseEl = document.createElement('div');
+                phaseEl.className = 'timeline-phase';
+
+                const chemoEvents = phase.events.filter(e => e.type === 'chemo');
+                const radioEvents = phase.events.filter(e => e.type === 'radio');
+
+                phaseEl.innerHTML = `
+                    <div class="time-marker">${phase.timeframe}</div>
+                    <div class="time-label">${phase.label}</div>
+                    <div class="timeline-grid">
+                        <div class="chemo-column">
+                            ${chemoEvents.map(event => `<div class="event-marker chemo" data-id="${event.id}">${event.title}</div>`).join('')}
+                        </div>
+                        <div class="radio-column">
+                            ${radioEvents.map(event => `<div class="event-marker radio" data-id="${event.id}">${event.title}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+                timelineContent.appendChild(phaseEl);
+            });
+
+            // Modal logic
+            function showModal(eventId) {
+                let eventData = null;
+                for (const phase of timelineData) {
+                    const found = phase.events.find(e => e.id === eventId);
+                    if (found) { eventData = found; break; }
+                }
+
+                if (!eventData) return;
+
+                modalContent.innerHTML = `
+                    <div class="modal-header">
+                        <div>
+                            <h3>${eventData.title}</h3>
+                            <div class="timeline-legend-item" style="font-size: 1em; margin-top: 0.5rem;">
+                                <span class="legend-dot ${eventData.type}-dot"></span>
+                                A ${eventData.type === 'chemo' ? 'Chemotherapy' : 'Radiation'} Complication
+                            </div>
+                        </div>
+                        <button id="close-modal">×</button>
+                    </div>
+                    <div class="modal-body">${eventData.details}</div>
+                `;
+                modalOverlay.classList.add('visible');
+            }
+
+            timelineContent.addEventListener('click', (e) => {
+                const marker = e.target.closest('.event-marker');
+                if (marker) {
+                    showModal(marker.dataset.id);
+                }
+            });
+
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target.id === 'modal-overlay' || e.target.closest('#close-modal')) {
+                    modalOverlay.classList.remove('visible');
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>
